@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preview · ABANCA DS</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/editorial.css">
+
+<style>
+.pv-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 99999;
+  height: 44px;
+  background: rgba(10,26,47,0.96);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; gap: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(245,241,234,0.1);
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.pv-bar .back {
+  color: var(--accent); text-decoration: none;
+  transition: color .15s; white-space: nowrap;
+}
+.pv-bar .back:hover { color: var(--paper); }
+.pv-bar .sep { color: rgba(245,241,234,0.2); margin: 0 14px; }
+.pv-bar .name { color: var(--paper); white-space: nowrap; }
+.pv-bar .spacer { flex: 1; }
+.pv-bar .group {
+  color: rgba(245,241,234,0.35); margin-right: 14px;
+  white-space: nowrap;
+}
+.pv-bar .cls {
+  color: var(--accent);
+  border: 1px solid rgba(184,148,86,0.25);
+  background: rgba(184,148,86,0.08);
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+.pv-content { padding-top: 44px; }
+</style>
+</head>
+<body>
+
+<!-- Curtain suprimido: la clase .lift lo colapsa y display:none lo esconde -->
+<div class="curtain lift" style="display:none"><div class="seal"></div></div>
+
+<!-- Preview bar -->
+<div class="pv-bar">
+  <a href="sistema-de-diseno.html" class="back">← Sistema de Diseño</a>
+  <span class="sep">/</span>
+  <span class="name" id="pv-name">—</span>
+  <span class="spacer"></span>
+  <span class="group" id="pv-group"></span>
+  <span class="cls" id="pv-cls"></span>
+</div>
+
+<!-- Contenido del componente -->
+<div class="pv-content" id="pv-content"></div>
+
+<script>
+document.body.classList.add('curtain-done', 'js-ready');
+</script>
+<script src="../js/editorial.js" defer></script>
+
+<script>
+/* ── Definiciones de componente ── */
+const C = {
+
+  /* ─── GLOBALES ─────────────────────────────────── */
+
+  btn: {
+    name: 'Botones', cls: '.btn · .btn.primary', group: 'Global',
+    html: `
+<div style="min-height:100vh;background:var(--paper);display:flex;flex-direction:column;gap:0">
+  <div style="padding:80px 80px 60px;border-bottom:1px solid var(--line)">
+    <div class="eyebrow" style="margin-bottom:32px"><span>Variante sobre fondo claro</span></div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+      <a class="btn" href="#">Explorar</a>
+      <a class="btn primary" href="#">Ver historia</a>
+    </div>
+  </div>
+  <div style="padding:80px;background:var(--ink);border-bottom:1px solid rgba(245,241,234,0.1)">
+    <div class="eyebrow" style="margin-bottom:32px"><span>Variante sobre fondo oscuro</span></div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+      <a class="btn" style="color:var(--paper);border-color:rgba(245,241,234,0.5)" href="#">Explorar</a>
+      <a class="btn primary" href="#">Ver historia</a>
+    </div>
+  </div>
+  <div style="padding:80px;background:var(--paper-2)">
+    <div class="eyebrow" style="margin-bottom:32px"><span>Variante sobre fondo crema</span></div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+      <a class="btn" href="#">Descargar informe</a>
+      <a class="btn primary" href="#">Contactar</a>
+    </div>
+  </div>
+</div>`
+  },
+
+  eyebrow: {
+    name: 'Eyebrow', cls: '.eyebrow', group: 'Global',
+    html: `
+<div style="padding:80px;min-height:100vh;display:flex;flex-direction:column;gap:64px">
+  <div>
+    <span class="eyebrow" style="margin-bottom:24px">Origen · 1717</span>
+    <h2 style="font-family:var(--serif);font-weight:300;font-size:clamp(32px,4vw,52px);letter-spacing:-0.02em;margin:0">El banco más antiguo <em style="color:var(--accent-deep)">de España.</em></h2>
+  </div>
+  <div>
+    <span class="eyebrow" style="margin-bottom:24px">§ 04 · Línea de tiempo</span>
+    <h2 style="font-family:var(--serif);font-weight:300;font-size:clamp(32px,4vw,52px);letter-spacing:-0.02em;margin:0">Tres siglos en <em style="color:var(--accent-deep)">nueve estaciones.</em></h2>
+  </div>
+  <div style="background:var(--ink);padding:60px;margin:-0px">
+    <span class="eyebrow" style="margin-bottom:24px;color:var(--accent)">§ 05 · La refundación</span>
+    <h2 style="font-family:var(--serif);font-weight:300;font-size:clamp(32px,4vw,52px);letter-spacing:-0.02em;margin:0;color:var(--paper)">2014. Un banco <em style="color:var(--accent)">desde cero.</em></h2>
+  </div>
+</div>`
+  },
+
+  'img-tile': {
+    name: 'Imagen editorial', cls: '.img-tile', group: 'Global',
+    html: `
+<div style="padding:64px;background:var(--paper)">
+  <div style="margin-bottom:48px">
+    <span class="eyebrow" style="margin-bottom:32px"><span>Variantes de tratamiento</span></span>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div>
+        <div class="img-tile" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&fit=crop" alt="">
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-top:10px">.img-tile</div>
+      </div>
+      <div>
+        <div class="img-tile sepia" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&fit=crop" alt="">
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-top:10px">.img-tile.sepia</div>
+      </div>
+      <div>
+        <div class="img-tile duotone" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&fit=crop" alt="">
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-top:10px">.img-tile.duotone</div>
+      </div>
+      <div>
+        <div class="img-tile archive" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80&fit=crop" alt="">
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-top:10px">.img-tile.archive</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <span class="eyebrow" style="margin-bottom:32px"><span>Con metadatos: .photo-tag + .caption</span></span>
+    <div class="img-tile" style="aspect-ratio:16/7;max-width:900px">
+      <img src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1600&q=80&fit=crop" alt="">
+      <div class="photo-tag">Archivo · 1920</div>
+      <div class="caption"><span>Betanzos, Galicia</span><span>© ABANCA</span></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  nav: {
+    name: 'Navegación', cls: 'nav.top', group: 'Global',
+    html: `
+<nav class="top scrolled" id="nav">
+  <a class="brand" href="../index.html" data-magnet>
+    <span class="bars">//</span>
+    <span>ABANCA</span>
+    <span class="sub">· La historia</span>
+  </a>
+  <ul>
+    <li><a href="#">Origen</a></li>
+    <li><a href="#">Cifras</a></li>
+    <li><a href="#">Línea de tiempo</a></li>
+    <li><a href="#">Liderazgo</a></li>
+  </ul>
+  <div class="right">
+    <button class="audio-toggle" aria-pressed="false" data-magnet>
+      <span class="bars"><i></i><i></i><i></i><i></i></span>
+      <span class="lbl">Sonido</span>
+    </button>
+    <div class="divider"></div>
+    <span class="lang active">ES</span>
+    <span class="lang">GL</span>
+    <span class="lang">EN</span>
+  </div>
+</nav>
+<div style="padding:160px 80px 80px;background:var(--paper)">
+  <div class="eyebrow" style="margin-bottom:20px"><span>Estado: scrolled</span></div>
+  <p style="font-family:var(--serif-body);font-size:17px;color:var(--ink-soft);max-width:52ch">La barra aparece con <code style="font-family:var(--mono);font-size:13px;background:var(--paper-2);padding:1px 5px">nav.top.scrolled</code> cuando el usuario hace scroll. En el hero es completamente transparente.</p>
+</div>`
+  },
+
+  footer: {
+    name: 'Footer', cls: 'footer.site', group: 'Global',
+    html: `
+<div style="padding:80px 80px 40px;background:var(--paper)">
+  <div class="eyebrow"><span>Componente footer completo</span></div>
+</div>
+<footer class="site">
+  <div class="top">
+    <div class="l">
+      <h3>Servir <span class="it">desde el</span><br>Atlántico.</h3>
+      <p>ABANCA Corporación Bancaria, S.A. · Sociedad inscrita en el Registro Mercantil de A Coruña · Entidad significativa supervisada por el Banco Central Europeo desde 2014.</p>
+    </div>
+    <div>
+      <h4>Inversores</h4>
+      <ul>
+        <li><a href="#">Resultados trimestrales</a></li>
+        <li><a href="#">Informe anual integrado</a></li>
+        <li><a href="#">Gobierno corporativo</a></li>
+        <li><a href="#">Calificación crediticia</a></li>
+        <li><a href="#">Hechos relevantes</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>Cantón Pequeño, 1<br>15003 · A Coruña</li>
+        <li>+34 981 188 000</li>
+        <li><a href="#">comunicacion@abanca.com</a></li>
+        <li><a href="#">LinkedIn</a> · <a href="#">X</a> · <a href="#">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bot">
+    <div class="l">© 2026 ABANCA Corporación Bancaria · Todos los derechos reservados</div>
+    <div class="r">Aviso legal · Política de privacidad · Cookies</div>
+  </div>
+  <div class="wordmark"><span class="bars">//</span>ABANCA</div>
+</footer>`
+  },
+
+  /* ─── HOME ─────────────────────────────────────── */
+
+  hero: {
+    name: 'Hero', cls: '.hero', group: 'Home',
+    html: `
+<nav class="top" id="nav">
+  <a class="brand" href="../index.html" data-magnet><span class="bars">//</span><span>ABANCA</span><span class="sub">· La historia</span></a>
+  <ul>
+    <li><a href="#">Origen</a></li><li><a href="#">Cifras</a></li>
+    <li><a href="#">Línea de tiempo</a></li><li><a href="#">Liderazgo</a></li>
+  </ul>
+  <div class="right">
+    <button class="audio-toggle" aria-pressed="false" data-magnet>
+      <span class="bars"><i></i><i></i><i></i><i></i></span><span class="lbl">Sonido</span>
+    </button>
+    <div class="divider"></div>
+    <span class="lang active">ES</span><span class="lang">GL</span><span class="lang">EN</span>
+  </div>
+</nav>
+<section class="hero" id="hero" data-hero-in>
+  <div class="stage">
+    <div class="l-sky" data-parallax="0.15"></div>
+    <div class="l-photo" data-parallax="0.32" style="background-image:url('https://images.unsplash.com/photo-1505142468610-359e7d316be0?auto=format&fit=crop&w=2400&q=80')"></div>
+    <div class="l-mid" data-parallax="0.5" style="background-image:url('https://images.unsplash.com/photo-1500036617522-c1c7d6b59a4f?auto=format&fit=crop&w=1200&q=80')"></div>
+    <div class="l-fog"></div>
+    <div class="l-fg">
+      <svg viewBox="0 0 1440 200" preserveAspectRatio="none" fill="none">
+        <path d="M0,140 C240,90 480,160 720,120 C960,80 1200,150 1440,110 L1440,200 L0,200 Z" fill="#0A1A2F" opacity="0.7"/>
+        <path d="M0,160 C300,120 600,170 900,140 C1200,110 1440,160 1440,140 L1440,200 L0,200 Z" fill="#0A1A2F"/>
+      </svg>
+    </div>
+    <div class="l-vig"></div>
+  </div>
+  <div class="coords">43°22′N · 8°23′W · Atlántico Norte</div>
+  <div class="content">
+    <div class="eyebrow"><span>1717 — 2026</span><span>· La historia de un banco gallego</span></div>
+    <h1>
+      <span class="line"><span style="--d:0.5s">Una banca</span></span>
+      <span class="line"><span style="--d:0.62s">con raíces</span></span>
+      <span class="line"><span style="--d:0.74s">de <span class="it">mar.</span></span></span>
+    </h1>
+    <div class="meta">
+      <p class="lede">Tres siglos. Once países. Una herencia que viene de Galicia y un proyecto que mira hacia el <em>Atlántico abierto</em>. Esta es la historia de ABANCA, contada desde la <em>orilla</em>.</p>
+      <div class="col"><span class="k">Sede</span><span class="v">A Coruña, Galicia</span></div>
+      <div class="col"><span class="k">Posición</span><span class="v">7º banco de España</span></div>
+      <div class="col"><span class="k">Estado</span><span class="v"><span class="pulse"></span>En activo · 308 años</span></div>
+    </div>
+  </div>
+  <div class="scroll-cue">Descender · scroll</div>
+</section>`
+  },
+
+  manifesto: {
+    name: 'Manifesto', cls: '.manifesto', group: 'Home',
+    html: `
+<section class="manifesto" id="manifesto">
+  <div class="label">§ 01 · Manifiesto</div>
+  <p id="manifesto-text">
+    <span class="word">El</span> <span class="word">dinero</span> <span class="word">de</span> <span class="word">los</span> <span class="word">gallegos</span> <span class="word em">protegió</span> <span class="word em">su</span> <span class="word em">tierra</span> <span class="word">durante</span> <span class="word">tres</span> <span class="word">siglos.</span> <span class="word">Hoy</span> <span class="word">la</span> <span class="word">conecta</span> <span class="word">con</span> <span class="word em">el</span> <span class="word em">mundo.</span>
+  </p>
+</section>`
+  },
+
+  stats: {
+    name: 'Stats', cls: '.stats', group: 'Home',
+    html: `
+<div class="stats-wrap" id="cifras">
+  <section class="stats">
+    <div class="head">
+      <div class="num">§ 02 · Cifras hoy</div>
+      <h2>Una <span class="it">institución</span>, en cifras.</h2>
+      <div class="progress">
+        <span>Ejercicio 2025</span>
+        <div class="bar" id="statsBar"></div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="cell">
+        <div class="k">Volumen de negocio</div>
+        <div class="v"><span class="num" data-target="121.4" data-decimals="1">0</span><span class="unit">mil M €</span></div>
+        <div class="desc">Activos totales del Grupo tras nueve fusiones en una década. Multiplicado por 2,3× desde 2014.</div>
+        <div class="delta">+18,4% YoY</div>
+        <div class="historical">2013 · 52.500 M€ → <span class="h-year">2025</span> · 121.400 M€</div>
+      </div>
+      <div class="cell">
+        <div class="k">Beneficio neto</div>
+        <div class="v"><span class="num" data-target="1245" data-decimals="0">0</span><span class="unit">M €</span></div>
+        <div class="desc">Resultado consolidado del último ejercicio. Multiplicado por 70× desde el rescate de NCG.</div>
+        <div class="delta">+23,1% YoY</div>
+        <div class="historical">2013 · 17,9 M€ → <span class="h-year">2025</span> · 1.245 M€</div>
+      </div>
+      <div class="cell">
+        <div class="k">Países</div>
+        <div class="v"><span class="num" data-target="11" data-decimals="0">0</span></div>
+        <div class="desc">Red propia desde Galicia hasta América, reproduciendo el mapa de la diáspora gallega.</div>
+        <div class="historical">2014 · 1 país → <span class="h-year">2025</span> · 11 mercados</div>
+      </div>
+      <div class="cell">
+        <div class="k">Clientes</div>
+        <div class="v"><span class="num" data-target="3.1" data-decimals="1">0</span><span class="unit">millones</span></div>
+        <div class="desc">Particulares, pymes, empresas y banca privada en el sur de Europa y red atlántica.</div>
+        <div class="delta">+11,0% YoY</div>
+        <div class="historical">2013 · 100K clientes → <span class="h-year">2025</span> · 3,1 M</div>
+      </div>
+    </div>
+    <div class="foot">Fuente · Informe anual ABANCA Corporación Bancaria · Datos auditados · Cierre 31 diciembre 2025</div>
+  </section>
+</div>`
+  },
+
+  origin: {
+    name: 'Origen', cls: '.origin', group: 'Home',
+    html: `
+<section class="origin" id="origen">
+  <div class="number-bg" id="bigYear">1717</div>
+  <div class="content">
+    <div class="left">
+      <div class="eyebrow"><span>§ 03 · Origen</span></div>
+      <h2>El banco más antiguo<span class="it">de España.</span></h2>
+      <div class="place">Betanzos · A Coruña · Reino de Galicia</div>
+      <div class="factbox">
+        <div class="row"><span class="k">Fundación</span><span class="v">1717</span></div>
+        <div class="row"><span class="k">Fundadores</span><span class="v">Hermanos Etcheverría</span></div>
+        <div class="row"><span class="k">Carácter</span><span class="v">Casa de cambio</span></div>
+        <div class="row"><span class="k">Continuidad</span><span class="v">297 años</span></div>
+        <div class="row"><span class="k">Absorbido</span><span class="v">2014 · ABANCA</span></div>
+      </div>
+    </div>
+    <div class="right reveal">
+      <p>En 1717, en la pequeña villa de Betanzos, los hermanos Etcheverría abrieron una casa de cambio para servir a comerciantes, marinos y emigrantes que cruzaban el Atlántico. Aquella casa se convirtió en Banco Etcheverría, la entidad bancaria continuamente operativa más antigua de España.</p>
+      <p>Durante tres siglos sobrevivió a guerras carlistas, a la Restauración, a dos repúblicas, a una Guerra Civil y a cuatro crisis financieras globales. Cuando, en 2014, fue absorbido por NCG Banco para dar nacimiento a la marca <em>ABANCA</em>, llevaba 297 años sin cerrar las puertas.</p>
+      <blockquote class="pull">
+        "Un banco no es un edificio ni una hoja de balance: es una <em>promesa</em> de continuidad que se traslada de una generación a la siguiente."
+        <span class="src">— Archivo Etcheverría, c. 1898</span>
+      </blockquote>
+      <p>Esa promesa atraviesa toda la historia que viene a continuación. La crisis de las cajas, el rescate público, la subasta del FROB, la llegada del grupo Banesco, el nacimiento de la marca actual y la expansión ibérica son capítulos sucesivos de una continuidad que ya dura tres siglos.</p>
+      <div class="img-tile sepia">
+        <img loading="lazy" alt="Archivo histórico — Betanzos" src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=1600&q=80"/>
+        <span class="photo-tag">Foto · Archivo · Betanzos, c. 1920</span>
+        <div class="caption"><span>Fachada original · Calle de los Plazuelos</span><span>BANCO ETCHEVERRÍA</span></div>
+      </div>
+    </div>
+  </div>
+</section>`
+  },
+
+  'big-quote': {
+    name: 'Big Quote', cls: '.big-quote', group: 'Home',
+    html: `
+<section class="big-quote">
+  <div class="label">§ 03.5 · Sentir Común</div>
+  <blockquote class="reveal-mask">
+    <span>Un banco con <span class="it">alma de caja</span> que nace con el objetivo de <em><span class="it">merecer</span></em> servir a los gallegos.</span>
+  </blockquote>
+  <div class="sig">
+    <div>
+      <div class="name">Juan Carlos Escotet Rodríguez</div>
+      <div class="role">Presidente · Consejo de Administración</div>
+    </div>
+    <div class="ghost">«Sentir Común»</div>
+    <div class="date">Santiago de Compostela<br>27 · 06 · 2014</div>
+  </div>
+</section>`
+  },
+
+  timeline: {
+    name: 'Timeline', cls: '.timeline', group: 'Home',
+    html: `
+<div class="timeline-wrap" id="linea" style="--tl-items:9">
+  <section class="timeline">
+    <div class="head">
+      <div>
+        <div class="eyebrow" style="margin-bottom:24px"><span>§ 04 · Línea de tiempo</span></div>
+        <h2>Tres siglos<br>en <span class="it">nueve estaciones.</span></h2>
+      </div>
+      <div class="meter">
+        <span>Año en foco</span>
+        <span class="v" id="tlYear">1717</span>
+      </div>
+    </div>
+    <div class="progress" id="tlProgress">
+      <div class="bar" id="tlBar"></div>
+    </div>
+    <div class="track-host">
+      <div class="track" id="tlTrack">
+        <article class="item"><div class="year">1717</div><div class="lbl">§ 04.1 · Origen</div><h3 class="h">Nace el Banco Etcheverría en Betanzos</h3><p class="b">Casa de cambio fundada por una familia vasca asentada en Galicia. Servirá a marinos, emigrantes y al comercio atlántico durante tres siglos sin cerrar nunca.</p><div class="meta">Betanzos · A Coruña</div></article>
+        <article class="item"><div class="year">1927</div><div class="lbl">§ 04.2 · Caja</div><h3 class="h">Caja de Ahorros y Monte de Piedad de La Coruña</h3><p class="b">La banca social entra en Galicia para proteger los ahorros de los emigrantes a América y financiar la pesca, la conserva y la agricultura local.</p><div class="meta">A Coruña · Era de la emigración</div></article>
+        <article class="item"><div class="year">2010</div><div class="lbl">§ 04.3 · Fusión</div><h3 class="h">Caixa Galicia + Caixanova = Novacaixagalicia</h3><p class="b">Caixa Galicia y Caixanova se fusionan en una única caja gallega bajo la presión de la reestructuración del sistema financiero español.</p><div class="meta">Reestructuración del sector</div></article>
+        <article class="item"><div class="year">2011</div><div class="lbl">§ 04.4 · Bancarización</div><h3 class="h">Nace NCG Banco</h3><p class="b">La crisis fuerza la conversión de la caja en banco. La entidad pasa a estar bajo el control del FROB tras una intervención pública de más de 9.000 M€.</p><div class="meta">Control público · FROB</div></article>
+        <article class="item"><div class="year">2013</div><div class="lbl">§ 04.5 · Subasta</div><h3 class="h">Banesco se adjudica NCG Banco</h3><p class="b">18 de diciembre. El grupo liderado por Juan Carlos Escotet se adjudica el 88,33% de NCG por 1.003 M€, superando a Santander, BBVA y La Caixa.</p><div class="meta">Subasta del FROB</div></article>
+        <article class="item"><div class="year">2014</div><div class="lbl">§ 04.6 · Refundación</div><h3 class="h">Nace ABANCA — 27 de junio</h3><p class="b">En Santiago de Compostela se presenta la nueva marca: <em>a banca</em>, en gallego. Identidad de Summa Branding. Lema: <em>Sentir Común</em>.</p><div class="meta">Santiago de Compostela</div></article>
+        <article class="item"><div class="year">2017</div><div class="lbl">§ 04.7 · Diversificación</div><h3 class="h">Salto a banca de consumo</h3><p class="b">Adquisición de Popular Servicios Financieros, integración como ABANCA Servicios Financieros. Comienza la diversificación de líneas de negocio.</p><div class="meta">Banca de consumo</div></article>
+        <article class="item"><div class="year">2019</div><div class="lbl">§ 04.8 · Iberia</div><h3 class="h">Internacionalización · Portugal</h3><p class="b">ABANCA absorbe la red ibérica de Deutsche Bank y Banco Caixa Geral. El banco gallego se convierte en una entidad ibérica de pleno derecho.</p><div class="meta">11 de junio · Lisboa</div></article>
+        <article class="item"><div class="year">2023</div><div class="lbl">§ 04.9 · Hoy</div><h3 class="h">EuroBic y consolidación</h3><p class="b">Con la adquisición de EuroBic, ABANCA supera los 120.000 M€ en volumen de negocio. Séptimo banco de España, primero entre los no cotizados.</p><div class="meta">Hoy · 11 países</div></article>
+      </div>
+    </div>
+  </section>
+</div>`
+  },
+
+  refundacion: {
+    name: 'Refundación', cls: '.refundacion', group: 'Home',
+    html: `
+<section class="refundacion" id="refundacion">
+  <div class="head">
+    <div class="l">
+      <div class="eyebrow"><span>§ 05 · La refundación</span></div>
+      <h2>2014. Un<br>banco<br><span class="it">desde cero.</span></h2>
+    </div>
+    <div class="r reveal">
+      <span class="date">Junio 2014 · Santiago de Compostela</span>
+      Tras la subasta del FROB, el grupo venezolano-español Banesco asume el control del banco rescatado. En seis meses, la agencia <strong>Summa Branding</strong> diseña una nueva identidad: una marca que rompa con el pasado, en gallego, sencilla, sin nostalgia. Nace <em>ABANCA</em>. Bajo el lema <em>«Sentir Común»</em>, la entidad inicia una década de saneamiento, beneficios y expansión.
+    </div>
+  </div>
+  <div class="three">
+    <div class="cell reveal">
+      <div class="n">01 · Estabilización</div>
+      <h3>Sanear lo <span class="it">heredado.</span></h3>
+      <p>El equipo de Escotet aplica un plan de tres fases para recapitalizar la entidad, ajustar la red y limpiar el balance. En dos años, el banco recupera la rentabilidad.</p>
+    </div>
+    <div class="cell reveal">
+      <div class="n">02 · Crecimiento</div>
+      <h3>Nueve fusiones en<span class="it"> una década.</span></h3>
+      <p>De los 52.000 M€ heredados de NCG, ABANCA alcanza los 120.000 M€ tras integrar Banco Etcheverría, Popular Servicios Financieros, Deutsche Bank Portugal, Banco Caixa Geral, TargoBank y EuroBic.</p>
+    </div>
+    <div class="cell reveal">
+      <div class="n">03 · Identidad</div>
+      <h3>De caja a <span class="it">banco gallego.</span></h3>
+      <p>El compromiso público de mantener la sede, la obra social y los créditos a familias y pymes en Galicia se traduce en Afundación y en una red propia más densa que la de cualquier competidor.</p>
+    </div>
+  </div>
+</section>`
+  },
+
+  lider: {
+    name: 'Liderazgo', cls: '.lider', group: 'Home',
+    html: `
+<section class="lider" id="lider">
+  <div class="container">
+    <div class="l reveal">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:24px">§ 07 · Presidencia</div>
+      <h2>Juan Carlos<br>Escotet<span class="it"> Rodríguez.</span></h2>
+      <div class="bio">
+        <p>Banquero hispano-venezolano, fundador y principal accionista del grupo Banesco. Tomó el control de NCG Banco tras la subasta del FROB en diciembre de 2013 y presentó la marca ABANCA seis meses después en Santiago de Compostela.</p>
+        <p>Desde 2017 es presidente del Consejo de Administración de ABANCA y mantiene la misma posición en Banesco Internacional. Controla el 84,7% del capital del banco gallego.</p>
+      </div>
+      <div class="table">
+        <div class="row"><span class="k">CARGO</span><span class="v">Presidente · Consejo de Administración</span></div>
+        <div class="row"><span class="k">DESDE</span><span class="v">2014 (vicepres.) · 2017 (pres.)</span></div>
+        <div class="row"><span class="k">FORMACIÓN</span><span class="v">Banquero · Economista</span></div>
+        <div class="row"><span class="k">ACCIONISTA</span><span class="v">84,7% del capital</span></div>
+        <div class="row"><span class="k">PARALELO</span><span class="v">Banesco Internacional (presidente)</span></div>
+      </div>
+    </div>
+    <div class="r reveal">
+      <div class="img-tile duotone">
+        <img loading="lazy" alt="Retrato institucional" src="https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=1200&q=80"/>
+        <span class="photo-tag">Retrato · Sede A Coruña</span>
+        <div class="caption"><span>Presidente · Consejo de Administración</span><span>2014 →</span></div>
+      </div>
+    </div>
+  </div>
+</section>`
+  },
+
+  press: {
+    name: 'En la prensa', cls: '.press', group: 'Home',
+    html: `
+<section class="press" id="prensa">
+  <div class="head">
+    <div class="l">
+      <div class="eyebrow"><span>§ 08 · En la prensa</span></div>
+      <h2>Tres siglos<br>en <span class="it">titulares.</span></h2>
+    </div>
+    <div class="r">Una década de cobertura institucional, financiera y económica. Selección editorial de la prensa nacional e internacional sobre la trayectoria del Grupo ABANCA.</div>
+  </div>
+  <div class="grid">
+    <article class="clip">
+      <div class="source"><span class="pub">El País · Economía</span><span>27 jun 2014</span></div>
+      <h3 class="headline">Nace ABANCA, la marca <span class="it">«para servir a Galicia»</span> de Escotet.</h3>
+      <p class="excerpt">Banesco presenta en Santiago de Compostela la identidad que sustituye a Novagalicia tras seis meses de rebranding desarrollado por Summa.</p>
+      <div class="more">Leer artículo</div>
+    </article>
+    <article class="clip">
+      <div class="source"><span class="pub">Expansión</span><span>28 mar 2018</span></div>
+      <h3 class="headline">Deutsche Bank vende su negocio minorista en <span class="it">Portugal a ABANCA</span> por 6,5 mil M€.</h3>
+      <p class="excerpt">La operación convierte al banco gallego en una entidad ibérica de pleno derecho y le otorga red propia en el mercado portugués.</p>
+      <div class="more">Leer artículo</div>
+    </article>
+    <article class="clip">
+      <div class="source"><span class="pub">Financial Times</span><span>15 may 2023</span></div>
+      <h3 class="headline">Spain's <span class="it">Abanca</span> targets Portugal's EuroBic in latest cross-border push.</h3>
+      <p class="excerpt">The Galicia-based lender becomes the seventh largest banking group in Spain and the leading non-listed bank in the country.</p>
+      <div class="more">Read article</div>
+    </article>
+    <article class="clip">
+      <div class="source"><span class="pub">Cinco Días</span><span>11 abr 2024</span></div>
+      <h3 class="headline">ABANCA se consolida como el banco <span class="it">no cotizado más grande</span> de España.</h3>
+      <p class="excerpt">Los resultados consolidados del ejercicio confirman la estrategia de crecimiento por adquisiciones liderada por Escotet desde 2014.</p>
+      <div class="more">Leer artículo</div>
+    </article>
+    <article class="clip">
+      <div class="source"><span class="pub">La Voz de Galicia</span><span>5 ago 2024</span></div>
+      <h3 class="headline">El banco con <span class="it">alma de caja</span> cumple diez años desde A Coruña.</h3>
+      <p class="excerpt">Una década después del rebranding, ABANCA mantiene su sede, su obra social y la mayor red de oficinas de la comunidad autónoma.</p>
+      <div class="more">Leer artículo</div>
+    </article>
+    <article class="clip">
+      <div class="source"><span class="pub">Bloomberg</span><span>22 oct 2025</span></div>
+      <h3 class="headline">Abanca explores European expansion as Galician lender turns <span class="it">308</span>.</h3>
+      <p class="excerpt">Founded as Banco Etcheverría in 1717, the institution remains Spain's oldest continuously operating bank and one of its most profitable.</p>
+      <div class="more">Read article</div>
+    </article>
+  </div>
+</section>`
+  }
+
+}; /* end C */
+
+/* ── Renderizar ── */
+const params = new URLSearchParams(location.search);
+const id = params.get('c');
+const comp = C[id];
+
+if (comp) {
+  document.title = comp.name + ' · Preview · ABANCA DS';
+  document.getElementById('pv-name').textContent = comp.name;
+  document.getElementById('pv-group').textContent = comp.group;
+  document.getElementById('pv-cls').textContent = comp.cls;
+  document.getElementById('pv-content').innerHTML = comp.html;
+} else {
+  // Índice de componentes si no hay ?c=
+  document.getElementById('pv-name').textContent = 'Índice de componentes';
+  document.getElementById('pv-content').innerHTML = `
+    <div style="padding:80px;max-width:900px">
+      <div class="eyebrow" style="margin-bottom:40px"><span>Todos los componentes</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+        ${Object.entries(C).map(([key, c]) => `
+          <a href="preview.html?c=${key}" style="
+            display:flex;flex-direction:column;gap:6px;padding:18px 20px;
+            border:1px solid var(--line);text-decoration:none;color:inherit;
+            transition:border-color .2s,background .2s;
+          " onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--paper-2)'"
+             onmouseout="this.style.borderColor='var(--line)';this.style.background='transparent'">
+            <span style="font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-deep)">${c.group}</span>
+            <span style="font-family:var(--serif);font-size:20px;letter-spacing:-.01em">${c.name}</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--mid)">${c.cls}</span>
+          </a>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ── JS de secciones (stats + manifesto + timeline) ── */
+window.addEventListener('DOMContentLoaded', () => {
+  // Manifesto
+  const mfWords = document.querySelectorAll('#manifesto-text .word');
+  if (mfWords.length) {
+    function onMfScroll() {
+      const sec = document.getElementById('manifesto');
+      if (!sec) return;
+      const rect = sec.getBoundingClientRect();
+      const total = mfWords.length;
+      const start = window.innerHeight * 0.85, end = window.innerHeight * 0.15;
+      const prog = Math.max(0, Math.min(1, (start - rect.top) / (start - end + rect.height * 0.4)));
+      mfWords.forEach((w, i) => w.classList.toggle('on', i < Math.floor(prog * total)));
+    }
+    window.addEventListener('scroll', onMfScroll, { passive: true });
+    onMfScroll();
+  }
+
+  // Stats
+  const statsWrap = document.querySelector('.stats-wrap');
+  if (statsWrap) {
+    const statsCells = document.querySelectorAll('.stats .grid .cell .num');
+    const statsBar = document.getElementById('statsBar');
+    const targets = Array.from(statsCells).map(el => ({ el, target: parseFloat(el.dataset.target), dec: parseInt(el.dataset.decimals || '0', 10) }));
+    function onStatsScroll() {
+      const rect = statsWrap.getBoundingClientRect();
+      const total = statsWrap.offsetHeight - window.innerHeight;
+      const p = Math.max(0, Math.min(1, -rect.top / total));
+      targets.forEach(({ el, target, dec }, i) => {
+        const start = i * 0.12, end = start + 0.5;
+        const lp = Math.max(0, Math.min(1, (p - start) / (end - start)));
+        const v = target * (1 - Math.pow(1 - lp, 3));
+        el.textContent = dec > 0 ? v.toFixed(dec).replace('.', ',') : Math.round(v).toLocaleString('es-ES');
+      });
+      if (statsBar) statsBar.style.setProperty('--p', (p * 100) + '%');
+    }
+    window.addEventListener('scroll', onStatsScroll, { passive: true });
+    onStatsScroll();
+  }
+
+  // Timeline
+  const tlWrap = document.querySelector('.timeline-wrap');
+  if (tlWrap) {
+    const tlTrack = document.getElementById('tlTrack');
+    const tlBar = document.getElementById('tlBar');
+    const tlYear = document.getElementById('tlYear');
+    const tlProgress = document.getElementById('tlProgress');
+    const tlItems = tlTrack ? Array.from(tlTrack.querySelectorAll('.item')) : [];
+    if (tlProgress && tlItems.length) {
+      tlItems.forEach((it, i) => {
+        const pip = document.createElement('div');
+        pip.className = 'pip';
+        pip.style.left = (i / (tlItems.length - 1) * 100) + '%';
+        const label = document.createElement('span');
+        label.className = 'pip-lbl';
+        label.textContent = it.querySelector('.year')?.textContent || '';
+        pip.appendChild(label);
+        tlProgress.appendChild(pip);
+      });
+    }
+    function onTlScroll() {
+      const rect = tlWrap.getBoundingClientRect();
+      const total = tlWrap.offsetHeight - window.innerHeight;
+      const p = Math.max(0, Math.min(1, -rect.top / total));
+      const idx = Math.round(p * (tlItems.length - 1));
+      if (tlYear) tlYear.textContent = tlItems[idx]?.querySelector('.year')?.textContent || '';
+      if (tlBar) tlBar.style.setProperty('--p', (p * 100) + '%');
+      if (tlTrack) {
+        const maxScroll = tlTrack.scrollWidth - tlTrack.parentElement.offsetWidth;
+        tlTrack.style.transform = `translateX(${-(p * maxScroll)}px)`;
+      }
+      document.querySelectorAll('.timeline-wrap .progress .pip').forEach((pip, i) => pip.classList.toggle('active', i === idx));
+    }
+    window.addEventListener('scroll', onTlScroll, { passive: true });
+    onTlScroll();
+  }
+});
+</script>
+</body>
+</html>

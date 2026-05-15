@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" fill="currentColor">
+  <g>
+    <rect x="0" y="6" width="3.5" height="36" transform="skewX(-18)"></rect>
+    <rect x="9" y="6" width="3.5" height="36" transform="skewX(-18)"></rect>
+  </g>
+  <text x="28" y="36" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="700" font-size="30" letter-spacing="1" fill="currentColor">ABANCA</text>
+</svg>

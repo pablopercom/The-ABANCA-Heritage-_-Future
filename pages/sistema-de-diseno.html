@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ABANCA · Sistema de Diseño</title>
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/editorial.css">
+
+<style>
+/* ─── DS PAGE CHROME ─── */
+.ds-wrap {
+  min-height: 100vh;
+}
+
+/* ─── SIDEBAR ─── */
+.ds-sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 260px;
+  background: var(--ink);
+  color: var(--paper);
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+  z-index: 200;
+  border-right: 1px solid rgba(245,241,234,0.07);
+}
+.ds-sidebar::-webkit-scrollbar { width: 3px; }
+.ds-sidebar::-webkit-scrollbar-thumb { background: rgba(245,241,234,0.1); }
+
+.ds-sidebar .brand {
+  padding: 28px 24px 22px;
+  border-bottom: 1px solid rgba(245,241,234,0.07);
+  display: flex; flex-direction: column; gap: 8px;
+  text-decoration: none; color: inherit;
+}
+.ds-sidebar .brand .logo {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--sans); font-weight: 700; font-size: 15px;
+}
+.ds-sidebar .brand .logo .sl {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--accent); font-size: 20px;
+}
+.ds-sidebar .brand .badge {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(184,148,86,0.3);
+  padding: 3px 8px; width: fit-content;
+}
+
+.ds-sidebar nav { padding: 12px 0; flex: 1; }
+
+.ds-sidebar .sec-label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(245,241,234,0.28);
+  padding: 18px 24px 6px;
+}
+.ds-sidebar a.ni {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 24px;
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.03em;
+  color: rgba(245,241,234,0.52);
+  text-decoration: none;
+  transition: color .15s, background .15s;
+  position: relative;
+}
+.ds-sidebar a.ni:hover { color: var(--paper); background: rgba(245,241,234,0.04); }
+.ds-sidebar a.ni.active { color: var(--paper); }
+.ds-sidebar a.ni.active::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--accent);
+}
+.ds-sidebar a.ni .d {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(245,241,234,0.18); flex-shrink: 0;
+  transition: background .15s;
+}
+.ds-sidebar a.ni.active .d, .ds-sidebar a.ni:hover .d { background: var(--accent); }
+
+.ds-sidebar .sb-footer {
+  padding: 18px 24px;
+  border-top: 1px solid rgba(245,241,234,0.07);
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(245,241,234,0.28);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.ds-sidebar .sb-footer a {
+  color: rgba(245,241,234,0.38); text-decoration: none; transition: color .15s;
+}
+.ds-sidebar .sb-footer a:hover { color: var(--accent); }
+
+/* ─── MAIN ─── */
+.ds-main { margin-left: 260px; min-height: 100vh; }
+
+/* ─── TOPBAR ─── */
+.ds-topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(245,241,234,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line-2);
+  padding: 13px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mid);
+}
+.ds-topbar .bc { display: flex; align-items: center; gap: 8px; }
+.ds-topbar .bc .sep { opacity: 0.4; }
+
+/* ─── INTRO ─── */
+.ds-intro {
+  padding: 80px 48px 64px;
+  background: var(--ink); color: var(--paper);
+  border-bottom: 1px solid rgba(245,241,234,0.07);
+}
+.ds-intro .tag {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.ds-intro .tag::before { content: ""; width: 20px; height: 1px; background: var(--accent); }
+.ds-intro h1 {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1.03; letter-spacing: -0.025em;
+  margin: 0 0 24px; max-width: 16ch;
+}
+.ds-intro h1 .it { font-style: italic; color: var(--accent); }
+.ds-intro p {
+  font-family: var(--serif-body); font-size: 18px;
+  color: var(--paper-dim); line-height: 1.6;
+  max-width: 52ch; margin: 0 0 36px;
+}
+.ds-intro .meta {
+  display: flex; gap: 0; flex-wrap: wrap;
+  border-top: 1px solid rgba(245,241,234,0.1);
+  padding-top: 28px;
+}
+.ds-intro .meta .item {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 0 32px 0 0; margin-right: 32px;
+  border-right: 1px solid rgba(245,241,234,0.1);
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--paper-muted);
+}
+.ds-intro .meta .item:last-child { border-right: none; }
+.ds-intro .meta .item strong { color: var(--accent); font-weight: 400; font-size: 11px; }
+
+/* ─── DIVIDER ─── */
+.ds-divider {
+  padding: 0 48px;
+  background: var(--ink-2);
+  border-top: 1px solid rgba(245,241,234,0.07);
+  border-bottom: 1px solid rgba(245,241,234,0.07);
+}
+.ds-divider .inner {
+  padding: 20px 0;
+  display: flex; align-items: center; gap: 20px;
+}
+.ds-divider .num {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(245,241,234,0.25); min-width: 28px;
+}
+.ds-divider h3 {
+  font-family: var(--mono); font-size: 11px;
+  font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  margin: 0; color: rgba(245,241,234,0.7);
+  white-space: nowrap;
+}
+.ds-divider .ln { flex: 1; height: 1px; background: rgba(245,241,234,0.07); }
+
+/* ─── SECTION ─── */
+.ds-section {
+  padding: 72px 48px;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.ds-section-hd { margin-bottom: 40px; }
+.ds-section-hd .stag {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent-deep); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.ds-section-hd .stag::before { content: ""; width: 16px; height: 1px; background: var(--accent); }
+.ds-section-hd h2 {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(28px, 3.5vw, 48px);
+  line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 12px;
+}
+.ds-section-hd h2 .it { font-style: italic; color: var(--accent-deep); }
+.ds-section-hd p {
+  font-family: var(--serif-body); font-size: 16px;
+  color: var(--ink-soft); line-height: 1.6; max-width: 60ch; margin: 0;
+}
+
+.sub-label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--mid); margin: 32px 0 14px;
+}
+
+/* ─── COLOR TOKENS ─── */
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.tc {
+  border: 1px solid var(--line); background: var(--paper);
+  overflow: hidden; cursor: pointer; position: relative;
+  transition: border-color .2s, transform .15s;
+}
+.tc:hover { border-color: var(--accent); transform: translateY(-2px); }
+.tc .sw { height: 72px; width: 100%; }
+.tc .ti { padding: 10px 12px 12px; }
+.tc .vn {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink); margin-bottom: 3px;
+}
+.tc .hx { font-family: var(--mono); font-size: 10px; color: var(--mid); }
+.tc .lb { font-family: var(--sans); font-size: 10px; color: var(--mid); margin-top: 2px; }
+.tc .ch {
+  position: absolute; top: 6px; right: 6px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+  background: rgba(10,26,47,0.55); color: rgba(245,241,234,0.85);
+  padding: 3px 6px; opacity: 0; transition: opacity .15s;
+}
+.tc:hover .ch { opacity: 1; }
+.tc.done .ch { opacity: 1; background: var(--pos); }
+
+.token-rows {
+  border: 1px solid var(--line);
+}
+.tr {
+  display: grid;
+  grid-template-columns: 44px 150px 1fr auto;
+  gap: 20px; align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line-2);
+  cursor: pointer; transition: background .15s;
+}
+.tr:last-child { border-bottom: none; }
+.tr:hover { background: var(--paper-2); }
+.tr .sw-s {
+  width: 44px; height: 24px;
+  border: 1px solid var(--line); border-radius: 2px;
+}
+.tr .vn { font-family: var(--mono); font-size: 11px; color: var(--ink); }
+.tr .dc { font-family: var(--sans); font-size: 11px; color: var(--mid); }
+.tr .vl { font-family: var(--mono); font-size: 10px; color: var(--mid); text-align: right; }
+
+/* ─── TYPE SPECIMENS ─── */
+.type-spec {
+  border: 1px solid var(--line); margin-bottom: 14px; overflow: hidden;
+}
+.type-spec .prev {
+  padding: 40px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.type-spec .meta-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; background: var(--paper-2);
+}
+.type-spec .meta-row .m {
+  padding: 14px 18px;
+  border-right: 1px solid var(--line);
+  font-family: var(--mono); font-size: 10px;
+}
+.type-spec .meta-row .m:last-child { border-right: none; }
+.type-spec .meta-row .m .k { color: var(--mid); margin-bottom: 3px; }
+.type-spec .meta-row .m .v { color: var(--ink); }
+
+.scale-row {
+  display: grid; grid-template-columns: 72px 1fr;
+  gap: 20px; padding: 18px 0;
+  border-bottom: 1px solid var(--line-2); align-items: baseline;
+}
+.scale-row:last-child { border-bottom: none; }
+.scale-row .sz {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* ─── SPACING ─── */
+.sp-row {
+  display: grid; grid-template-columns: 130px 56px 1fr;
+  gap: 20px; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--line-2);
+}
+.sp-row:last-child { border-bottom: none; }
+.sp-row .spn { font-family: var(--mono); font-size: 11px; color: var(--ink); }
+.sp-row .spv { font-family: var(--mono); font-size: 10px; color: var(--mid); }
+.sp-bar-wrap { background: var(--paper-2); height: 18px; position: relative; }
+.sp-bar { position: absolute; top: 0; left: 0; bottom: 0; background: var(--accent); opacity: 0.38; }
+
+/* ─── COMPONENT PREVIEW ─── */
+.comp-prev {
+  border: 1px solid var(--line); margin-bottom: 20px;
+}
+.comp-prev .area {
+  padding: 48px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 16px; min-height: 120px;
+}
+.comp-prev .area.dk { background: var(--ink); }
+.comp-prev .area.cr { background: var(--paper-2); }
+.comp-prev .area.lft { justify-content: flex-start; align-items: flex-start; flex-direction: column; }
+.comp-prev .cm {
+  padding: 14px 18px;
+  background: var(--paper-2);
+  display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center;
+}
+.comp-prev .cm .cn {
+  font-family: var(--mono); font-size: 11px; color: var(--ink);
+  background: var(--paper-3); padding: 3px 9px;
+  border: 1px solid var(--line); white-space: nowrap;
+}
+.comp-prev .cm .cd { font-family: var(--sans); font-size: 12px; color: var(--mid); }
+
+/* ─── COMPONENT LIST ─── */
+.cl {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+.cl-item {
+  background: var(--paper); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.cl-item .cn { font-family: var(--mono); font-size: 11px; color: var(--ink); }
+.cl-item .cc {
+  font-family: var(--mono); font-size: 10px; color: var(--accent-deep);
+  background: rgba(184,148,86,0.1);
+  padding: 2px 6px; width: fit-content;
+}
+.cl-item .cd { font-family: var(--sans); font-size: 11px; color: var(--mid); line-height: 1.4; margin-top: 3px; }
+
+/* ─── SECTION CARDS ─── */
+.sc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(264px, 1fr));
+  gap: 12px;
+}
+.sc {
+  border: 1px solid var(--line); padding: 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  text-decoration: none; color: inherit;
+  transition: border-color .2s, background .2s;
+}
+.sc:hover { border-color: var(--accent); background: var(--paper-2); }
+a.sc:hover .sc-title { color: var(--accent-deep); }
+.sc .sc-tag {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent-deep);
+}
+.sc .sc-title {
+  font-family: var(--serif); font-weight: 400;
+  font-size: 20px; line-height: 1.15; letter-spacing: -0.01em;
+  transition: color .2s;
+}
+.sc .sc-desc {
+  font-family: var(--serif-body); font-size: 13px;
+  color: var(--ink-soft); line-height: 1.5;
+}
+.sc .sc-tags {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;
+}
+.sc .st {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mid); padding: 3px 7px;
+  border: 1px solid var(--line);
+}
+
+/* ─── NOTE ─── */
+.note {
+  display: flex; gap: 12px; padding: 14px 18px;
+  background: rgba(184,148,86,0.06);
+  border-left: 2px solid var(--accent);
+  margin: 24px 0;
+}
+.note .ni { font-family: var(--mono); font-size: 10px; color: var(--accent-deep); flex-shrink: 0; margin-top: 2px; }
+.note p { font-family: var(--serif-body); font-size: 14px; color: var(--ink-soft); line-height: 1.5; margin: 0; }
+code { font-family: var(--mono); font-size: 13px; background: var(--paper-2); padding: 1px 5px; border: 1px solid var(--line); }
+
+/* ─── TOAST ─── */
+.ds-toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--ink); color: var(--paper);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  padding: 11px 18px; border-left: 2px solid var(--accent);
+  z-index: 9999; pointer-events: none;
+  transform: translateY(60px); opacity: 0;
+  transition: transform .3s cubic-bezier(.2,.7,.1,1), opacity .3s;
+}
+.ds-toast.show { transform: translateY(0); opacity: 1; }
+
+/* ─── DS PAGE FOOTER ─── */
+.ds-foot {
+  padding: 40px 48px;
+  background: var(--ink); color: var(--paper);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border-top: 1px solid rgba(245,241,234,0.07);
+}
+.ds-foot a { color: var(--accent); text-decoration: none; }
+.ds-foot a:hover { color: var(--paper); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .ds-sidebar { display: none; }
+  .ds-main { margin-left: 0; }
+  .ds-section, .ds-intro { padding: 48px 24px; }
+  .ds-topbar { padding: 12px 24px; }
+  .ds-divider { padding: 0 24px; }
+  .ds-foot { padding: 32px 24px; flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="ds-toast" id="toast"></div>
+
+<div class="ds-wrap">
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="ds-sidebar">
+  <a href="../index.html" class="brand">
+    <div class="logo"><span class="sl">//</span> ABANCA</div>
+    <span class="badge">Design System</span>
+  </a>
+
+  <nav>
+    <div class="sec-label">Fundamentos</div>
+    <a href="#intro"      class="ni active"><span class="d"></span>Introducción</a>
+    <a href="#colors"     class="ni"><span class="d"></span>Colores</a>
+    <a href="#typography" class="ni"><span class="d"></span>Tipografía</a>
+    <a href="#spacing"    class="ni"><span class="d"></span>Espaciado</a>
+
+    <div class="sec-label">Componentes globales</div>
+    <a href="#buttons"    class="ni"><span class="d"></span>Botones</a>
+    <a href="#eyebrow"    class="ni"><span class="d"></span>Eyebrow</a>
+    <a href="#img-tile"   class="ni"><span class="d"></span>Imagen editorial</a>
+    <a href="#reveal"     class="ni"><span class="d"></span>Animaciones</a>
+    <a href="#nav-comp"   class="ni"><span class="d"></span>Navegación</a>
+    <a href="#footer-comp"class="ni"><span class="d"></span>Footer</a>
+
+    <div class="sec-label">Secciones · Home</div>
+    <a href="#home"       class="ni"><span class="d"></span>Vista general</a>
+
+    <div class="sec-label">Páginas del sitio</div>
+    <a href="../index.html"           class="ni"><span class="d"></span>Home</a>
+  </nav>
+
+  <div class="sb-footer">
+    <span>v1.0 · Mayo 2026</span>
+    <span>editorial.css</span>
+    <a href="../index.html">← Volver al sitio</a>
+  </div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main class="ds-main">
+
+  <!-- ─── INTRO ─── -->
+  <section class="ds-intro" id="intro">
+    <div class="tag">Sistema de Diseño</div>
+    <h1>ABANCA <span class="it">Heritage<br>&amp; Future.</span></h1>
+    <p>Los tokens, componentes y secciones del relato visual de tres siglos, en un único lugar. Todo lo que cambia aquí se propaga al producto automáticamente.</p>
+    <div class="meta">
+      <div class="item"><span>Archivo CSS</span><strong>editorial.css</strong></div>
+      <div class="item"><span>Tokens</span><strong>28 variables</strong></div>
+      <div class="item"><span>Componentes globales</span><strong>8</strong></div>
+      <div class="item"><span>Secciones de producto</span><strong>9</strong></div>
+      <div class="item"><span>Stack</span><strong>HTML · CSS · JS Vanilla</strong></div>
+    </div>
+  </section>
+
+  <!-- TOPBAR (sticky) -->
+  <div class="ds-topbar">
+    <div class="bc">
+      <span>Design System</span>
+      <span class="sep">·</span>
+      <span id="cur-section">Introducción</span>
+    </div>
+    <span>editorial.css</span>
+  </div>
+
+  <!-- ─────────────────────────── -->
+  <!-- DIVIDER: FUNDAMENTOS        -->
+  <!-- ─────────────────────────── -->
+  <div class="ds-divider">
+    <div class="inner">
+      <span class="num">01</span>
+      <h3>Fundamentos</h3>
+      <div class="ln"></div>
+    </div>
+  </div>
+
+  <!-- ─── COLORES ─── -->
+  <section class="ds-section" id="colors">
+    <div class="ds-section-hd">
+      <div class="stag">Fundamentos</div>
+      <h2>Color <span class="it">palette.</span></h2>
+      <p>28 tokens de color organizados en tres grupos: sólidos de marca, ink con opacidad (sobre fondos claros) y paper con opacidad (sobre fondos oscuros). Clic en cualquier ficha para copiar la variable CSS.</p>
+    </div>
+
+    <div class="sub-label">Sólidos</div>
+    <div class="token-grid">
+      <div class="tc" data-copy="var(--ink)" onclick="copyToken(this)">
+        <div class="sw" style="background:#0A1A2F"></div>
+        <div class="ti"><div class="vn">--ink</div><div class="hx">#0A1A2F</div><div class="lb">Deep navy · Principal</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--ink-2)" onclick="copyToken(this)">
+        <div class="sw" style="background:#1F3148"></div>
+        <div class="ti"><div class="vn">--ink-2</div><div class="hx">#1F3148</div><div class="lb">Navy suave</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--paper)" onclick="copyToken(this)">
+        <div class="sw" style="background:#F5F1EA;border-bottom:1px solid rgba(10,26,47,.08)"></div>
+        <div class="ti"><div class="vn">--paper</div><div class="hx">#F5F1EA</div><div class="lb">Crema cálida · Base</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--paper-2)" onclick="copyToken(this)">
+        <div class="sw" style="background:#EBE5D8;border-bottom:1px solid rgba(10,26,47,.08)"></div>
+        <div class="ti"><div class="vn">--paper-2</div><div class="hx">#EBE5D8</div><div class="lb">Pergamino</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--paper-3)" onclick="copyToken(this)">
+        <div class="sw" style="background:#D9D1C0;border-bottom:1px solid rgba(10,26,47,.08)"></div>
+        <div class="ti"><div class="vn">--paper-3</div><div class="hx">#D9D1C0</div><div class="lb">Pergamino oscuro</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--accent)" onclick="copyToken(this)">
+        <div class="sw" style="background:#B89456"></div>
+        <div class="ti"><div class="vn">--accent</div><div class="hx">#B89456</div><div class="lb">Heritage brass</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--accent-deep)" onclick="copyToken(this)">
+        <div class="sw" style="background:#8A6A35"></div>
+        <div class="ti"><div class="vn">--accent-deep</div><div class="hx">#8A6A35</div><div class="lb">Brass profundo</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--accent-pale)" onclick="copyToken(this)">
+        <div class="sw" style="background:#E0CFA8;border-bottom:1px solid rgba(10,26,47,.08)"></div>
+        <div class="ti"><div class="vn">--accent-pale</div><div class="hx">#E0CFA8</div><div class="lb">Brass pálido</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--mid)" onclick="copyToken(this)">
+        <div class="sw" style="background:#6B7B8E"></div>
+        <div class="ti"><div class="vn">--mid</div><div class="hx">#6B7B8E</div><div class="lb">Atlantic gray</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+      <div class="tc" data-copy="var(--pos)" onclick="copyToken(this)">
+        <div class="sw" style="background:#2D7A3F"></div>
+        <div class="ti"><div class="vn">--pos</div><div class="hx">#2D7A3F</div><div class="lb">Positivo · ESG</div></div>
+        <div class="ch">Copiar</div>
+      </div>
+    </div>
+
+    <div class="sub-label" style="margin-top:36px">Con opacidad — ink sobre fondo claro</div>
+    <div class="token-rows">
+      <div class="tr" data-copy="var(--ink-soft)" onclick="copyToken(this)">
+        <div class="sw-s" style="background:rgba(10,26,47,.78)"></div>
+        <div class="vn">--ink-soft</div>
+        <div class="dc">Texto cuerpo sobre --paper</div>
+        <div class="vl">rgba(10,26,47, .78)</div>
+      </div>
+      <div class="tr" data-copy="var(--ink-dim)" onclick="copyToken(this)">
+        <div class="sw-s" style="background:rgba(10,26,47,.55)"></div>
+        <div class="vn">--ink-dim</div>
+        <div class="dc">Texto secundario sobre fondo claro</div>
+        <div class="vl">rgba(10,26,47, .55)</div>
+      </div>
+      <div class="tr" data-copy="var(--line)" onclick="copyToken(this)">
+        <div class="sw-s" style="background:rgba(10,26,47,.14)"></div>
+        <div class="vn">--line</div>
+        <div class="dc">Bordes y divisores principales</div>
+        <div class="vl">rgba(10,26,47, .14)</div>
+      </div>
+      <div class="tr" data-copy="var(--line-2)" onclick="copyToken(this)">
+        <div class="sw-s" style="background:rgba(10,26,47,.06)"></div>
+        <div class="vn">--line-2</div>
+        <div class="dc">Divisores sutiles</div>
+        <div class="vl">rgba(10,26,47, .06)</div>
+      </div>
+    </div>
+
+    <div class="sub-label" style="margin-top:36px">Con opacidad — paper sobre fondo oscuro (--ink)</div>
+    <div class="token-rows" style="background:var(--ink)">
+      <div class="tr" data-copy="var(--paper-faint)" onclick="copyToken(this)" style="border-bottom-color:rgba(245,241,234,.08)">
+        <div class="sw-s" style="background:rgba(245,241,234,.12);border-color:rgba(245,241,234,.2)"></div>
+        <div class="vn" style="color:var(--paper)">--paper-faint</div>
+        <div class="dc" style="color:var(--paper-muted)">Bordes y divisores sobre --ink</div>
+        <div class="vl" style="color:var(--paper-muted)">rgba(245,241,234, .12)</div>
+      </div>
+      <div class="tr" data-copy="var(--paper-muted)" onclick="copyToken(this)" style="border-bottom-color:rgba(245,241,234,.08)">
+        <div class="sw-s" style="background:rgba(245,241,234,.55);border-color:rgba(245,241,234,.2)"></div>
+        <div class="vn" style="color:var(--paper)">--paper-muted</div>
+        <div class="dc" style="color:var(--paper-muted)">Texto secundario sobre --ink</div>
+        <div class="vl" style="color:var(--paper-muted)">rgba(245,241,234, .55)</div>
+      </div>
+      <div class="tr" data-copy="var(--paper-dim)" onclick="copyToken(this)" style="border-bottom-color:rgba(245,241,234,.08)">
+        <div class="sw-s" style="background:rgba(245,241,234,.75);border-color:rgba(245,241,234,.2)"></div>
+        <div class="vn" style="color:var(--paper)">--paper-dim</div>
+        <div class="dc" style="color:var(--paper-muted)">Texto cuerpo sobre --ink</div>
+        <div class="vl" style="color:var(--paper-muted)">rgba(245,241,234, .75)</div>
+      </div>
+      <div class="tr" data-copy="var(--accent-subtle)" onclick="copyToken(this)" style="border-bottom:none">
+        <div class="sw-s" style="background:rgba(184,148,86,.12);border-color:rgba(245,241,234,.2)"></div>
+        <div class="vn" style="color:var(--paper)">--accent-subtle</div>
+        <div class="dc" style="color:var(--paper-muted)">Fondos de efecto accent</div>
+        <div class="vl" style="color:var(--paper-muted)">rgba(184,148,86, .12)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TIPOGRAFÍA ─── -->
+  <section class="ds-section" id="typography">
+    <div class="ds-section-hd">
+      <div class="stag">Fundamentos</div>
+      <h2>Tipo<span class="it">grafía.</span></h2>
+      <p>Cuatro familias con roles editoriales distintos. Todas cargadas desde Google Fonts con los pesos exactos que el producto necesita.</p>
+    </div>
+
+    <!-- Cormorant -->
+    <div class="type-spec">
+      <div class="prev">
+        <div style="font-family:var(--serif);font-size:clamp(48px,7vw,100px);font-weight:300;line-height:0.92;letter-spacing:-0.025em">
+          La historia<br><em style="color:var(--accent-deep)">atlántica.</em>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="m"><div class="k">Variable CSS</div><div class="v">--serif</div></div>
+        <div class="m"><div class="k">Familia</div><div class="v">Cormorant Garamond</div></div>
+        <div class="m"><div class="k">Uso</div><div class="v">H1–H3, títulos, pull quotes</div></div>
+      </div>
+    </div>
+
+    <!-- Source Serif 4 -->
+    <div class="type-spec">
+      <div class="prev">
+        <div style="font-family:var(--serif-body);font-size:19px;line-height:1.65;max-width:54ch;color:var(--ink-soft)">
+          Desde la orilla del Atlántico, una institución financiera construida sobre tres siglos de confianza. El primer apunte contable data de 1717, en Betanzos, Galicia.
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="m"><div class="k">Variable CSS</div><div class="v">--serif-body</div></div>
+        <div class="m"><div class="k">Familia</div><div class="v">Source Serif 4</div></div>
+        <div class="m"><div class="k">Uso</div><div class="v">Párrafos y cuerpo de texto</div></div>
+      </div>
+    </div>
+
+    <!-- Geist -->
+    <div class="type-spec">
+      <div class="prev" style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:0.01em">ABANCA · La historia</div>
+        <div style="font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-soft)">Navegación · Botones · UI labels</div>
+        <div style="font-family:var(--sans);font-size:12px;font-weight:300;color:var(--mid)">Subtítulos funcionales y metadatos de interfaz</div>
+      </div>
+      <div class="meta-row">
+        <div class="m"><div class="k">Variable CSS</div><div class="v">--sans</div></div>
+        <div class="m"><div class="k">Familia</div><div class="v">Geist</div></div>
+        <div class="m"><div class="k">Uso</div><div class="v">Nav, footer, UI, botones</div></div>
+      </div>
+    </div>
+
+    <!-- Geist Mono -->
+    <div class="type-spec">
+      <div class="prev" style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-deep)">ORIGEN · 1717</div>
+        <div style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid)">BETANZOS, GALICIA — ESPAÑA</div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--mid)">--ink · #0A1A2F · rgba(10, 26, 47)</div>
+      </div>
+      <div class="meta-row">
+        <div class="m"><div class="k">Variable CSS</div><div class="v">--mono</div></div>
+        <div class="m"><div class="k">Familia</div><div class="v">Geist Mono</div></div>
+        <div class="m"><div class="k">Uso</div><div class="v">Eyebrow, fechas, tokens, datos</div></div>
+      </div>
+    </div>
+
+    <!-- Escala -->
+    <div class="sub-label" style="margin-top:36px">Escala tipográfica · --serif</div>
+    <div>
+      <div class="scale-row">
+        <div class="sz">Display</div>
+        <div style="font-family:var(--serif);font-weight:300;font-size:clamp(56px,9vw,140px);line-height:0.9;letter-spacing:-0.03em">1717</div>
+      </div>
+      <div class="scale-row">
+        <div class="sz">H1</div>
+        <div style="font-family:var(--serif);font-weight:300;font-size:clamp(36px,5vw,64px);line-height:1.03;letter-spacing:-0.025em">Tres siglos sobre el <em style="color:var(--accent-deep)">Atlántico.</em></div>
+      </div>
+      <div class="scale-row">
+        <div class="sz">H2</div>
+        <div style="font-family:var(--serif);font-weight:300;font-size:clamp(28px,3.5vw,48px);line-height:1.05;letter-spacing:-0.02em">La <em style="color:var(--accent-deep)">refundación</em> de 2011.</div>
+      </div>
+      <div class="scale-row">
+        <div class="sz">H3</div>
+        <div style="font-family:var(--serif);font-weight:400;font-size:clamp(22px,2.4vw,34px);line-height:1.2;letter-spacing:-0.01em">Liderazgo <em style="color:var(--accent-deep)">institucional</em></div>
+      </div>
+      <div class="scale-row">
+        <div class="sz">Pull</div>
+        <div style="font-family:var(--serif);font-size:24px;font-style:italic;font-weight:300;line-height:1.3;border-left:2px solid var(--accent);padding-left:20px;max-width:38ch">"Una entidad construida sobre la confianza de tres siglos."</div>
+      </div>
+      <div class="scale-row">
+        <div class="sz">Body</div>
+        <div style="font-family:var(--serif-body);font-size:18px;line-height:1.65;max-width:50ch;color:var(--ink-soft)">La primera caja gallega nació en Betanzos en 1717. Hoy opera en once mercados y gestiona activos por valor de más de 70.000 millones de euros.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ESPACIADO ─── -->
+  <section class="ds-section" id="spacing">
+    <div class="ds-section-hd">
+      <div class="stag">Fundamentos</div>
+      <h2>Espaci<span class="it">ado.</span></h2>
+      <p>Escala de espaciado semántica para paddings de sección y márgenes verticales. <code>--pad</code> y <code>--pad-l</code> son alias de <code>--s-md</code> y <code>--s-lg</code> para uso horizontal.</p>
+    </div>
+    <div>
+      <div class="sp-row"><div class="spn">--s-sm</div><div class="spv">24px</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:12%"></div></div></div>
+      <div class="sp-row"><div class="spn">--s-md · --pad</div><div class="spv">48px</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:24%"></div></div></div>
+      <div class="sp-row"><div class="spn">--s-lg · --pad-l</div><div class="spv">80px</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:40%"></div></div></div>
+      <div class="sp-row"><div class="spn">--s-xl</div><div class="spv">140px</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:70%"></div></div></div>
+      <div class="sp-row"><div class="spn">--s-2xl</div><div class="spv">200px</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:100%"></div></div></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── -->
+  <!-- DIVIDER: COMPONENTES        -->
+  <!-- ─────────────────────────── -->
+  <div class="ds-divider">
+    <div class="inner">
+      <span class="num">02</span>
+      <h3>Componentes globales</h3>
+      <div class="ln"></div>
+    </div>
+  </div>
+
+  <!-- ─── BOTONES ─── -->
+  <section class="ds-section" id="buttons">
+    <div class="ds-section-hd">
+      <div class="stag">Componente global</div>
+      <h2>Boto<span class="it">nes.</span></h2>
+      <p>Dos variantes sobre etiqueta <code>&lt;a&gt;</code> o <code>&lt;button&gt;</code>. La flecha → del <code>::after</code> se desplaza 4px al hover.</p>
+    </div>
+
+    <div class="comp-prev">
+      <div class="area">
+        <a class="btn" href="#">Explorar</a>
+        <a class="btn primary" href="#">Ver historia</a>
+      </div>
+      <div class="cm">
+        <span class="cn">.btn &nbsp;&nbsp; .btn.primary</span>
+        <span class="cd">Ghost sobre fondo claro · Relleno --ink sobre fondo claro. Al hover se invierten.</span>
+      </div>
+    </div>
+
+    <div class="comp-prev">
+      <div class="area dk">
+        <a class="btn" style="color:var(--paper);border-color:rgba(245,241,234,.5)" href="#">Explorar</a>
+        <a class="btn primary" href="#">Ver historia</a>
+      </div>
+      <div class="cm">
+        <span class="cn">.btn sobre --ink</span>
+        <span class="cd">Sobre fondos oscuros el ghost requiere override manual: <code>color:var(--paper); border-color:…</code></span>
+      </div>
+    </div>
+    <div style="margin-top:28px"><a href="preview.html?c=btn" class="btn">Ver preview aislado</a></div>
+  </section>
+
+  <!-- ─── EYEBROW ─── -->
+  <section class="ds-section" id="eyebrow">
+    <div class="ds-section-hd">
+      <div class="stag">Componente global</div>
+      <h2>Ey<span class="it">ebrow.</span></h2>
+      <p>Etiqueta de sección en <code>--mono</code>. Genera automáticamente un trazo dorado de 28px a la izquierda vía <code>::before</code>.</p>
+    </div>
+
+    <div class="comp-prev">
+      <div class="area lft" style="padding:40px 48px;gap:16px">
+        <span class="eyebrow">Origen</span>
+        <span class="eyebrow">Fundamentos · 1717</span>
+      </div>
+      <div class="cm">
+        <span class="cn">.eyebrow</span>
+        <span class="cd">Mono 11px, tracking 0.18em, uppercase, color --accent-deep. Regla dorada vía ::before.</span>
+      </div>
+    </div>
+    <div style="margin-top:28px"><a href="preview.html?c=eyebrow" class="btn">Ver preview aislado</a></div>
+  </section>
+
+  <!-- ─── IMG-TILE ─── -->
+  <section class="ds-section" id="img-tile">
+    <div class="ds-section-hd">
+      <div class="stag">Componente global</div>
+      <h2>Imagen <span class="it">editorial.</span></h2>
+      <p>Contenedor de imagen con tratamiento cinematográfico. Cuatro variantes de color mediante clase modificadora.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+      <div>
+        <div class="img-tile" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=70&fit=crop" alt="" loading="lazy">
+        </div>
+        <div class="sub-label" style="margin:8px 0 0">.img-tile</div>
+      </div>
+      <div>
+        <div class="img-tile sepia" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=70&fit=crop" alt="" loading="lazy">
+        </div>
+        <div class="sub-label" style="margin:8px 0 0">.img-tile.sepia</div>
+      </div>
+      <div>
+        <div class="img-tile duotone" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=70&fit=crop" alt="" loading="lazy">
+        </div>
+        <div class="sub-label" style="margin:8px 0 0">.img-tile.duotone</div>
+      </div>
+      <div>
+        <div class="img-tile archive" style="aspect-ratio:3/4">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=70&fit=crop" alt="" loading="lazy">
+        </div>
+        <div class="sub-label" style="margin:8px 0 0">.img-tile.archive</div>
+      </div>
+    </div>
+
+    <div class="comp-prev">
+      <div class="area" style="padding:0">
+        <div class="img-tile" style="width:100%;aspect-ratio:21/8">
+          <img src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1200&q=70&fit=crop" alt="" loading="lazy">
+          <div class="photo-tag">Archivo · 1920</div>
+          <div class="caption"><span>Betanzos, Galicia</span><span>© ABANCA</span></div>
+        </div>
+      </div>
+      <div class="cm">
+        <span class="cn">.img-tile + .photo-tag + .caption</span>
+        <span class="cd">Overlays de metadatos con backdrop-filter. Etiqueta top-left, créditos bottom.</span>
+      </div>
+    </div>
+    <div style="margin-top:28px"><a href="preview.html?c=img-tile" class="btn">Ver preview aislado</a></div>
+  </section>
+
+  <!-- ─── REVEAL ─── -->
+  <section class="ds-section" id="reveal">
+    <div class="ds-section-hd">
+      <div class="stag">Componente global</div>
+      <h2>Anima<span class="it">ciones.</span></h2>
+      <p>Utilidades de aparición al scroll. El JS en <code>editorial.js</code> observa todos los <code>.reveal</code> y añade la clase <code>.in</code> cuando entran en viewport.</p>
+    </div>
+    <div class="cl">
+      <div class="cl-item">
+        <div class="cn">Reveal</div>
+        <div class="cc">.reveal</div>
+        <div class="cd">Fade + translateY(40px) → posición normal. 1.1s, easing suave.</div>
+      </div>
+      <div class="cl-item">
+        <div class="cn">Reveal rápido</div>
+        <div class="cc">.reveal-fast</div>
+        <div class="cd">Solo fade, sin movimiento. 0.8s. Para fondos y elementos grandes.</div>
+      </div>
+      <div class="cl-item">
+        <div class="cn">Reveal máscara</div>
+        <div class="cc">.reveal-mask</div>
+        <div class="cd">El hijo directo emerge de abajo: translateY(110%) → 0. Para títulos.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NAV ─── -->
+
+  <section class="ds-section" id="nav-comp">
+    <div class="ds-section-hd">
+      <div class="stag">Componente global</div>
+      <h2>Navega<span class="it">ción.</span></h2>
+      <p>Barra fija en top con tres zonas: marca, links centrados y controles. Transparente en el hero, frosted glass al hacer scroll.</p>
+    </div>
+    <div class="cl">
+      <div class="cl-item">
+        <div class="cn">Base</div>
+        <div class="cc">nav.top</div>
+        <div class="cd">Grid 3 col: brand · links · right. Fixed, z-index 100, transición de fondo.</div>
+      </div>
+      <div class="cl-item">
+        <div class="cn">Scrolled</div>
+        <div class="cc">nav.top.scrolled</div>
+        <div class="cd">Activa backdrop-filter blur(20px) + fondo --paper 90% + border inferior.</div>
+      </div>
+      <div class="cl-item">
+        <div class="cn">Audio toggle</div>
+        <div class="cc">.audio-toggle</div>
+        <div class="cd">Botón pill. Estado .on anima barras y activa Web Audio API.</div>
+      </div>
+      <div class="cl-item">
+        <div class="cn">Dropdown</div>
+        <div class="cc">.dropdown</div>
+        <div class="cd">Panel 720px, grid de cards con preview. Activo con .open en el li padre.</div>
+      </div>
+    </div>
+    <div style="margin-top:28px"><a href="preview.html?c=nav" class="btn">Ver preview aislado</a></div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <section class="ds-section" id="footer-comp">
+    <div class="ds-section-hd">
+      <div class="stag">Componente global</div>
+      <h2>Foot<span class="it">er.</span></h2>
+      <p>Footer completo con grid de columnas, bottom bar legal y wordmark tipográfico a gran escala sobre fondo --ink.</p>
+    </div>
+    <div class="cl">
+      <div class="cl-item">
+        <div class="cn">Grid superior</div>
+        <div class="cc">footer.site .top</div>
+        <div class="cd">4 columnas (1.4fr + 3×1fr). Col izq: tagline de marca y descripción.</div>
+      </div>
+      <div class="cl-item">
+        <div class="cn">Bottom bar</div>
+        <div class="cc">footer.site .bot</div>
+        <div class="cd">2 col: copyright izq, enlaces der. Mono 10px, tracking 0.14em.</div>
+      </div>
+      <div class="cl-item">
+        <div class="cn">Wordmark</div>
+        <div class="cc">footer.site .wordmark</div>
+        <div class="cd">--serif clamp(60px, 18vw, 280px). Overflow oculto en X.</div>
+      </div>
+    </div>
+    <div style="margin-top:28px"><a href="preview.html?c=footer" class="btn">Ver preview aislado</a></div>
+  </section>
+
+  <!-- ─────────────────────────── -->
+  <!-- DIVIDER: HOME               -->
+  <!-- ─────────────────────────── -->
+  <div class="ds-divider">
+    <div class="inner">
+      <span class="num">03</span>
+      <h3>Secciones · Home</h3>
+      <div class="ln"></div>
+    </div>
+  </div>
+
+  <!-- ─── HOME SECTIONS ─── -->
+  <section class="ds-section" id="home">
+    <div class="ds-section-hd">
+      <div class="stag">index.html</div>
+      <h2>Secciones del <span class="it">relato.</span></h2>
+      <p>Las nueve secciones narrativas del home. Cada bloque de CSS vive en <code>editorial.css</code> bajo el comentario <code>/* ═══ HOME ═══ */</code>.</p>
+    </div>
+
+    <div class="sc-grid">
+      <a class="sc" href="preview.html?c=hero">
+        <div class="sc-tag">§ 01</div>
+        <div class="sc-title">.hero</div>
+        <div class="sc-desc">Parallax con 4 layers (sky, photo, mid, fg). Contenido en .content con .meta y .actions.</div>
+        <div class="sc-tags"><span class="st">Parallax</span><span class="st">Multi-layer</span><span class="st">100vh</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=manifesto">
+        <div class="sc-tag">§ 02</div>
+        <div class="sc-title">.manifesto</div>
+        <div class="sc-desc">Texto editorial con figura de fondo y cita grande en --serif. Fondo --ink.</div>
+        <div class="sc-tags"><span class="st">Dark</span><span class="st">Editorial</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=stats">
+        <div class="sc-tag">§ 03</div>
+        <div class="sc-title">.stats</div>
+        <div class="sc-desc">Cuatro métricas en grid sticky. La sección ocupa 400vh para el efecto de scroll.</div>
+        <div class="sc-tags"><span class="st">Sticky</span><span class="st">400vh</span><span class="st">Grid 2×2</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=origin">
+        <div class="sc-tag">§ 04</div>
+        <div class="sc-title">.origin</div>
+        <div class="sc-desc">Grid 2 col con imagen izquierda y texto a la derecha. Fondo --paper-2.</div>
+        <div class="sc-tags"><span class="st">Grid 2col</span><span class="st">Cream</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=big-quote">
+        <div class="sc-tag">§ 05</div>
+        <div class="sc-title">.big-quote</div>
+        <div class="sc-desc">Cita a pantalla completa en --serif italic. Número de año como fondo decorativo.</div>
+        <div class="sc-tags"><span class="st">Dark</span><span class="st">Fullwidth</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=timeline">
+        <div class="sc-tag">§ 06</div>
+        <div class="sc-title">.timeline</div>
+        <div class="sc-desc">Carrusel horizontal con scroll-jacking. La pista .track se desplaza en X via JS durante el scroll vertical.</div>
+        <div class="sc-tags"><span class="st">Scroll-jack</span><span class="st">Horizontal</span><span class="st">JS</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=refundacion">
+        <div class="sc-tag">§ 07</div>
+        <div class="sc-title">.refundacion</div>
+        <div class="sc-desc">Fondo --ink con grid header + 3 tarjetas de hito. Fechas en --accent.</div>
+        <div class="sc-tags"><span class="st">Dark</span><span class="st">Grid 3col</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=lider">
+        <div class="sc-tag">§ 08</div>
+        <div class="sc-title">.lider</div>
+        <div class="sc-desc">Grid horizontal con fotografía de liderazgo, cita y datos de contexto.</div>
+        <div class="sc-tags"><span class="st">Grid 2col</span><span class="st">Portrait</span></div>
+      </a>
+      <a class="sc" href="preview.html?c=press">
+        <div class="sc-tag">§ 09</div>
+        <div class="sc-title">.press</div>
+        <div class="sc-desc">Galería de apariciones en prensa. Grid de 3 cards con imagen, publicación, fecha y titular.</div>
+        <div class="sc-tags"><span class="st">Grid 3col</span><span class="st">Cards</span></div>
+      </a>
+    </div>
+
+    <div style="margin-top:28px">
+      <a href="../index.html" class="btn">Ver el home en vivo</a>
+    </div>
+  </section>
+
+  <!-- ─── DS FOOTER ─── -->
+  <div class="ds-foot">
+    <span style="color:rgba(10,26,47,.35)">ABANCA · Design System · v1.0 · Mayo 2026</span>
+    <a href="../index.html">← Volver al sitio</a>
+  </div>
+
+</main>
+</div><!-- /ds-wrap -->
+
+<script>
+(function () {
+  // ── Active nav on scroll ──
+  const navLinks = document.querySelectorAll('.ds-sidebar .ni');
+  const curEl = document.getElementById('cur-section');
+
+  const names = {
+    intro: 'Introducción', colors: 'Colores', typography: 'Tipografía',
+    spacing: 'Espaciado', buttons: 'Botones', eyebrow: 'Eyebrow',
+    'img-tile': 'Imagen editorial', reveal: 'Animaciones',
+    'nav-comp': 'Navegación', 'footer-comp': 'Footer',
+    home: 'Home'
+  };
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const id = e.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      if (curEl && names[id]) curEl.textContent = names[id];
+    });
+  }, { rootMargin: '-15% 0px -65% 0px' });
+
+  document.querySelectorAll('[id]').forEach(s => io.observe(s));
+
+  // ── Copy token ──
+  window.copyToken = function (el) {
+    const text = el.dataset.copy;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      const hint = el.querySelector('.ch');
+      if (hint) {
+        hint.textContent = '✓ Copiado';
+        el.classList.add('done');
+        setTimeout(() => { hint.textContent = 'Copiar'; el.classList.remove('done'); }, 1800);
+      }
+      const toast = document.getElementById('toast');
+      toast.textContent = text + ' — copiado';
+      toast.classList.add('show');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.classList.remove('show'), 2200);
+    });
+  };
+}());
+</script>
+</body>
+</html>
