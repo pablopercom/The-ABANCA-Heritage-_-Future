@@ -337,6 +337,7 @@ footer.site .bot {
   color: rgba(245, 241, 234, 0.5);
 }
 footer.site .bot .r { text-align: right; }
+footer.site .bot a { color: inherit; text-decoration: none; }
 footer.site .wordmark {
   margin-top: 80px;
   padding-top: 40px;
