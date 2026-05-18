@@ -154,6 +154,12 @@ nav.top {
   transition: backdrop-filter .4s ease, background .4s ease, border-color .4s ease, padding .4s ease;
   border-bottom: 1px solid transparent;
 }
+nav.top:not(.scrolled) {
+  color: rgba(245, 241, 234, 0.9);
+}
+nav.top:not(.scrolled) .right .divider { background: rgba(245, 241, 234, 0.3); }
+nav.top:not(.scrolled) .right .audio-toggle { border-color: rgba(245, 241, 234, 0.35); color: rgba(245, 241, 234, 0.9); }
+nav.top:not(.scrolled) ul a, nav.top:not(.scrolled) ul .menu-trigger { color: rgba(245, 241, 234, 0.9); }
 nav.top.scrolled {
   background: rgba(245, 241, 234, 0.9);
   backdrop-filter: blur(20px) saturate(1.1);
