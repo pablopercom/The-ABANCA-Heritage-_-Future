@@ -49,7 +49,7 @@
   font-family: var(--mono); font-size: 9px;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--accent);
-  border: 1px solid rgba(184,148,86,0.3);
+  border: 1px solid rgba(184,148,86,0.3); /* local */
   padding: 3px 8px; width: fit-content;
 }
 
@@ -58,7 +58,7 @@
 .ds-sidebar .sec-label {
   font-family: var(--mono); font-size: 9px;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(245,241,234,0.28);
+  color: rgba(245,241,234,0.28); /* local */
   padding: 18px 24px 6px;
 }
 .ds-sidebar a.ni {
@@ -66,12 +66,12 @@
   padding: 7px 24px;
   font-family: var(--mono); font-size: 11px;
   letter-spacing: 0.03em;
-  color: rgba(245,241,234,0.52);
+  color: var(--paper-muted);
   text-decoration: none;
   transition: color .15s, background .15s;
   position: relative;
 }
-.ds-sidebar a.ni:hover { color: var(--paper); background: rgba(245,241,234,0.04); }
+.ds-sidebar a.ni:hover { color: var(--paper); background: rgba(245,241,234,0.04); /* local */ }
 .ds-sidebar a.ni.active { color: var(--paper); }
 .ds-sidebar a.ni.active::before {
   content: ""; position: absolute; left: 0; top: 0; bottom: 0;
@@ -79,7 +79,7 @@
 }
 .ds-sidebar a.ni .d {
   width: 4px; height: 4px; border-radius: 50%;
-  background: rgba(245,241,234,0.18); flex-shrink: 0;
+  background: var(--paper-border-md); flex-shrink: 0;
   transition: background .15s;
 }
 .ds-sidebar a.ni.active .d, .ds-sidebar a.ni:hover .d { background: var(--accent); }
@@ -89,11 +89,11 @@
   border-top: 1px solid var(--paper-line);
   font-family: var(--mono); font-size: 9px;
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(245,241,234,0.28);
+  color: rgba(245,241,234,0.28); /* local */
   display: flex; flex-direction: column; gap: 8px;
 }
 .ds-sidebar .sb-footer a {
-  color: rgba(245,241,234,0.38); text-decoration: none; transition: color .15s;
+  color: rgba(245,241,234,0.38); /* local */ text-decoration: none; transition: color .15s;
 }
 .ds-sidebar .sb-footer a:hover { color: var(--accent); }
 
@@ -103,7 +103,7 @@
 /* ─── TOPBAR ─── */
 .ds-topbar {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(245,241,234,0.94);
+  background: var(--paper-solid);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--line-2);
   padding: 13px 48px;
@@ -170,12 +170,12 @@
 .ds-divider .num {
   font-family: var(--mono); font-size: 9px;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(245,241,234,0.25); min-width: 28px;
+  color: rgba(245,241,234,0.25); /* local */ min-width: 28px;
 }
 .ds-divider h3 {
   font-family: var(--mono); font-size: 11px;
   font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-  margin: 0; color: rgba(245,241,234,0.7);
+  margin: 0; color: var(--paper-dim);
   white-space: nowrap;
 }
 .ds-divider .ln { flex: 1; height: 1px; background: var(--paper-line); }
@@ -234,7 +234,7 @@
 .tc .ch {
   position: absolute; top: 6px; right: 6px;
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
-  background: var(--ink-dim); color: rgba(245,241,234,0.85);
+  background: var(--ink-dim); color: rgba(245,241,234,0.85); /* local */
   padding: 3px 6px; opacity: 0; transition: opacity .15s;
 }
 .tc:hover .ch { opacity: 1; }
@@ -348,7 +348,7 @@
 .cl-item .cn { font-family: var(--mono); font-size: 11px; color: var(--ink); }
 .cl-item .cc {
   font-family: var(--mono); font-size: 10px; color: var(--accent-deep);
-  background: rgba(184,148,86,0.1);
+  background: var(--accent-subtle);
   padding: 2px 6px; width: fit-content;
 }
 .cl-item .cd { font-family: var(--sans); font-size: 11px; color: var(--mid); line-height: 1.4; margin-top: 3px; }
@@ -394,7 +394,7 @@ a.sc:hover .sc-title { color: var(--accent-deep); }
 /* ─── NOTE ─── */
 .note {
   display: flex; gap: 12px; padding: 14px 18px;
-  background: rgba(184,148,86,0.06);
+  background: rgba(184,148,86,0.06); /* local */
   border-left: 2px solid var(--accent);
   margin: 24px 0;
 }
