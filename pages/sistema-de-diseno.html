@@ -71,7 +71,7 @@
   transition: color .15s, background .15s;
   position: relative;
 }
-.ds-sidebar a.ni:hover { color: var(--paper); background: rgba(245,241,234,0.04); /* local */ }
+.ds-sidebar a.ni:hover { color: var(--paper); background: var(--paper-hover); }
 .ds-sidebar a.ni.active { color: var(--paper); }
 .ds-sidebar a.ni.active::before {
   content: ""; position: absolute; left: 0; top: 0; bottom: 0;
@@ -778,7 +778,7 @@ code { font-family: var(--mono); font-size: 13px; background: var(--paper-2); pa
 
     <div class="comp-prev">
       <div class="area dk">
-        <a class="btn" style="color:var(--paper);border-color:rgba(245,241,234,.5)" href="#">Explorar</a>
+        <a class="btn" style="color:var(--paper);border-color:var(--paper-hint)" href="#">Explorar</a>
         <a class="btn primary" href="#">Ver historia</a>
       </div>
       <div class="cm">
@@ -1030,7 +1030,7 @@ code { font-family: var(--mono); font-size: 13px; background: var(--paper-2); pa
 
   <!-- ─── DS FOOTER ─── -->
   <div class="ds-foot">
-    <span style="color:rgba(10,26,47,.35)">ABANCA · Design System · v1.0 · Mayo 2026</span>
+    <span style="color:var(--line-strong)">ABANCA · Design System · v1.0 · Mayo 2026</span>
     <a href="../index.html">← Volver al sitio</a>
   </div>
 

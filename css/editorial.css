@@ -46,6 +46,7 @@ html { scroll-behavior: smooth; }
   --paper-border: rgba(245, 241, 234, 0.15);  /* borde sutil en dark */
   --paper-border-md: rgba(245, 241, 234, 0.18); /* borde medio en dark */
   --paper-border-light: rgba(245, 241, 234, 0.20); /* borde claro en dark */
+  --paper-hover: rgba(245, 241, 234, 0.04);       /* hover ultraligero sobre --ink */
 
   /* ── Color: accent con opacidad ─────── */
   --accent-subtle: rgba(184, 148, 86, 0.12); /* fondos de efecto */
