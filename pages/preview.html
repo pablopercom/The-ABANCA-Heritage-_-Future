@@ -629,30 +629,38 @@ window.addEventListener('DOMContentLoaded', () => {
     const tlItems = tlTrack ? Array.from(tlTrack.querySelectorAll('.item')) : [];
     if (tlProgress && tlItems.length) {
       tlItems.forEach((it, i) => {
+        const pct = (i / (tlItems.length - 1)) * 100;
         const pip = document.createElement('div');
         pip.className = 'pip';
-        pip.style.left = (i / (tlItems.length - 1) * 100) + '%';
-        const label = document.createElement('span');
-        label.className = 'pip-lbl';
-        label.textContent = it.querySelector('.year')?.textContent || '';
-        pip.appendChild(label);
+        pip.style.left = pct + '%';
+        pip.dataset.idx = i;
         tlProgress.appendChild(pip);
+        const lbl = document.createElement('div');
+        lbl.className = 'pip-label';
+        lbl.style.left = pct + '%';
+        lbl.textContent = it.querySelector('.year').textContent;
+        lbl.dataset.idx = i;
+        tlProgress.appendChild(lbl);
       });
     }
     function onTlScroll() {
+      if (!tlWrap || !tlTrack) return;
       const rect = tlWrap.getBoundingClientRect();
       const total = tlWrap.offsetHeight - window.innerHeight;
       const p = Math.max(0, Math.min(1, -rect.top / total));
-      const idx = Math.round(p * (tlItems.length - 1));
-      if (tlYear) tlYear.textContent = tlItems[idx]?.querySelector('.year')?.textContent || '';
-      if (tlBar) tlBar.style.setProperty('--p', (p * 100) + '%');
-      if (tlTrack) {
-        const maxScroll = tlTrack.scrollWidth - tlTrack.parentElement.offsetWidth;
-        tlTrack.style.transform = `translateX(${-(p * maxScroll)}px)`;
-      }
-      document.querySelectorAll('.timeline-wrap .progress .pip').forEach((pip, i) => pip.classList.toggle('active', i === idx));
+      const maxScroll = tlTrack.scrollWidth - tlTrack.parentElement.clientWidth;
+      tlTrack.style.transform = `translate3d(${-p * maxScroll}px, 0, 0)`;
+      if (tlBar) tlBar.style.width = (p * 100) + '%';
+      const idx = Math.min(tlItems.length - 1, Math.round(p * (tlItems.length - 1)));
+      tlItems.forEach((it, i) => it.classList.toggle('active', i === idx));
+      const pips = tlProgress ? tlProgress.querySelectorAll('.pip') : [];
+      const lbls = tlProgress ? tlProgress.querySelectorAll('.pip-label') : [];
+      pips.forEach((pp, i) => pp.classList.toggle('active', i <= idx));
+      lbls.forEach((ll, i) => ll.classList.toggle('active', i === idx));
+      if (tlYear && tlItems[idx]) tlYear.textContent = tlItems[idx].querySelector('.year').textContent;
     }
     window.addEventListener('scroll', onTlScroll, { passive: true });
+    window.addEventListener('resize', onTlScroll);
     onTlScroll();
   }
 });
