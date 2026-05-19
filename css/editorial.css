@@ -1243,3 +1243,68 @@ footer.site .wordmark .bars { color: var(--accent); font-style: italic; font-wei
   .timeline .track .item { flex: 1 1 100%; }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   SALA DE PRENSA
+═══════════════════════════════════════════════════════════ */
+
+/* ─────────────── PRESS HERO ─────────────── */
+.press-hero {
+  background: var(--ink);
+  padding: var(--s-xl) var(--pad-l) var(--s-lg);
+  min-height: 60vh;
+}
+.press-hero .ph-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: var(--s-sm);
+}
+.press-hero .ph-title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  color: var(--paper);
+  line-height: 1.05;
+  margin-bottom: var(--s-sm);
+}
+.press-hero .ph-lead {
+  font-family: var(--serif-body);
+  font-size: 1.2rem;
+  color: var(--paper-muted);
+  max-width: 640px;
+  margin-bottom: var(--s-md);
+}
+.press-hero .ph-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.press-hero .ph-filter {
+  border: 1px solid var(--paper-ghost);
+  color: var(--paper-dim);
+  background: transparent;
+  padding: 8px 20px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.press-hero .ph-filter:hover,
+.press-hero .ph-filter.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+@media (max-width: 768px) {
+  .press-hero {
+    padding-top: var(--s-lg);
+    padding-bottom: var(--s-lg);
+  }
+  .press-hero .ph-title {
+    font-size: clamp(2.2rem, 8vw, 3.2rem);
+  }
+}
+

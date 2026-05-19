@@ -281,3 +281,12 @@
   updateActiveNav();
 
 })();
+
+document.querySelectorAll('.ph-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.ph-filters')
+       .querySelectorAll('.ph-filter')
+       .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
