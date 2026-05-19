@@ -137,7 +137,17 @@
       }
     }
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-  document.querySelectorAll('.reveal, .reveal-fast, .reveal-mask').forEach(el => io.observe(el));
+  document.querySelectorAll('.reveal, .reveal-fast, .reveal-mask, .reveal-left, .reveal-right, .reveal-scale').forEach(el => io.observe(el));
+
+  const lineIO = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        lineIO.unobserve(e.target);
+      }
+    }
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.draw-line').forEach(el => lineIO.observe(el));
 
   // ─── Counter on view ───────────────────────────────────
   const counterIO = new IntersectionObserver((entries) => {

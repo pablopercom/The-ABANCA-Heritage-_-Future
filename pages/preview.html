@@ -550,10 +550,10 @@ const C = {
     name: 'Press Hero', cls: '.press-hero', group: 'Sala de Prensa',
     html: `
 <section class="press-hero">
-  <p class="ph-eyebrow">// Sala de Prensa</p>
-  <h1 class="ph-title">ABANCA<br>en los medios.</h1>
-  <p class="ph-lead">Cobertura editorial, notas de prensa y apariciones institucionales del grupo desde 2014.</p>
-  <div class="ph-filters">
+  <p class="ph-eyebrow reveal-fast">// Sala de Prensa</p>
+  <h1 class="ph-title reveal d-200">ABANCA<br>en los medios.</h1>
+  <p class="ph-lead reveal d-300">Cobertura editorial, notas de prensa y apariciones institucionales del grupo desde 2014.</p>
+  <div class="ph-filters reveal d-400">
     <button class="ph-filter active">Todos</button>
     <button class="ph-filter">2026</button>
     <button class="ph-filter">2025</button>
@@ -568,10 +568,10 @@ const C = {
     html: `
 <section class="press-featured">
   <div class="pf-inner">
-    <div class="pf-image">
+    <div class="pf-image reveal-left">
       <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80" alt="Sede ABANCA">
     </div>
-    <div class="pf-content">
+    <div class="pf-content reveal d-200">
       <p class="pf-label">// Artículo destacado</p>
       <p class="pf-source">Financial Times · <span>12 mayo 2026</span></p>
       <h2 class="pf-title">ABANCA consolida su expansión atlántica con la apertura de su décimo país</h2>
@@ -592,43 +592,137 @@ const C = {
       <span class="pg-count">24 artículos</span>
     </div>
     <div class="pg-list">
-      <article class="pg-item">
+      <article class="pg-item reveal d-100">
         <div><span class="pgi-source">El País</span><span class="pgi-date">08 may 2026</span></div>
         <h3 class="pgi-title">La banca gallega lidera el ranking de satisfacción cliente por tercer año</h3>
         <p class="pgi-excerpt">ABANCA encabeza por tercer ejercicio consecutivo el índice de satisfacción de clientes del sector financiero español, según el informe anual de KPMG.</p>
         <div class="pgi-footer"><span class="pgi-tag">Negocio</span><span class="pgi-arrow">→</span></div>
       </article>
-      <article class="pg-item">
+      <article class="pg-item reveal d-200">
         <div><span class="pgi-source">Bloomberg</span><span class="pgi-date">02 may 2026</span></div>
         <h3 class="pgi-title">Atlantic banking: how regional lenders are outpacing national giants</h3>
         <p class="pgi-excerpt">A new report highlights how mid-size Atlantic-facing banks, led by ABANCA, are capturing market share through digital transformation and community banking models.</p>
         <div class="pgi-footer"><span class="pgi-tag">Internacional</span><span class="pgi-arrow">→</span></div>
       </article>
-      <article class="pg-item">
+      <article class="pg-item reveal d-300">
         <div><span class="pgi-source">Expansión</span><span class="pgi-date">28 abr 2026</span></div>
         <h3 class="pgi-title">ABANCA lanza su plataforma de banca digital para empresas en Portugal</h3>
         <p class="pgi-excerpt">El grupo presenta en Lisboa su nueva suite de servicios digitales para pymes y empresas medianas, con integración directa con los sistemas fiscales portugueses.</p>
         <div class="pgi-footer"><span class="pgi-tag">Digital</span><span class="pgi-arrow">→</span></div>
       </article>
-      <article class="pg-item">
+      <article class="pg-item reveal d-400">
         <div><span class="pgi-source">Cinco Días</span><span class="pgi-date">21 abr 2026</span></div>
         <h3 class="pgi-title">El modelo de banca atlántica gana adeptos entre inversores institucionales</h3>
         <p class="pgi-excerpt">Fondos soberanos y family offices europeos aumentan su exposición al sector financiero gallego ante la solidez de sus ratios de capital y la baja morosidad.</p>
         <div class="pgi-footer"><span class="pgi-tag">Inversión</span><span class="pgi-arrow">→</span></div>
       </article>
-      <article class="pg-item">
+      <article class="pg-item reveal d-100">
         <div><span class="pgi-source">La Voz de Galicia</span><span class="pgi-date">15 abr 2026</span></div>
         <h3 class="pgi-title">ABANCA destina 40 millones a financiación de proyectos de economía azul</h3>
         <p class="pgi-excerpt">La entidad refuerza su compromiso con el sector marítimo gallego con una línea de crédito específica para proyectos de acuicultura sostenible y energía marina.</p>
         <div class="pgi-footer"><span class="pgi-tag">ESG</span><span class="pgi-arrow">→</span></div>
       </article>
-      <article class="pg-item">
+      <article class="pg-item reveal d-200">
         <div><span class="pgi-source">Voz Pópuli</span><span class="pgi-date">09 abr 2026</span></div>
         <h3 class="pgi-title">Juan Carlos Escotet reafirma el carácter gallego de ABANCA ante sus accionistas</h3>
         <p class="pgi-excerpt">En la junta general de accionistas, el presidente del grupo subrayó el compromiso de la entidad con Galicia como sede permanente e inamovible del grupo financiero.</p>
         <div class="pgi-footer"><span class="pgi-tag">Corporativo</span><span class="pgi-arrow">→</span></div>
       </article>
     </div>
+  </div>
+</section>`
+  },
+
+  /* ─── LÍNEA DE TIEMPO ──────────────────────────── */
+
+  timelineHero: {
+    name: 'Timeline Hero', cls: '.timeline-hero', group: 'Línea de Tiempo',
+    html: `
+<section class="timeline-hero">
+  <div class="th-bg"></div>
+  <div class="th-content">
+    <p class="th-eyebrow reveal-fast">La historia completa</p>
+    <div class="th-arc">
+      <span class="th-year-start reveal-left">1717</span>
+      <span class="th-separator">—</span>
+      <span class="th-year-end reveal-right d-150">2026</span>
+    </div>
+    <p class="th-title reveal d-300">Tres siglos de banca gallega. Desde las primeras cajas de ahorro hasta convertirse en el séptimo banco de España.</p>
+    <div class="th-stats reveal d-500">
+      <div class="ths-item">
+        <span class="ths-value">308</span>
+        <span class="ths-label">Años de historia</span>
+      </div>
+      <div class="ths-item">
+        <span class="ths-value">11</span>
+        <span class="ths-label">Países</span>
+      </div>
+      <div class="ths-item">
+        <span class="ths-value">+4M</span>
+        <span class="ths-label">Clientes</span>
+      </div>
+      <div class="ths-item">
+        <span class="ths-value">121,4 MM€</span>
+        <span class="ths-label">Activos totales</span>
+      </div>
+    </div>
+  </div>
+</section>`
+  },
+
+  timelineItemFull: {
+    name: 'Timeline Item Full', cls: '.tl-item', group: 'Línea de Tiempo',
+    html: `
+<div>
+  <article class="tl-item">
+    <div class="tli-inner">
+      <div class="tli-visual reveal-left">
+        <div class="tli-image">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80" alt="Galicia histórica">
+        </div>
+      </div>
+      <div class="tli-content reveal d-200">
+        <span class="tli-year-bg reveal-fast d-400">1857</span>
+        <p class="tli-period">1857 — 1920</p>
+        <h2 class="tli-title">El origen gallego</h2>
+        <p class="tli-body">Las primeras cajas de ahorro gallegas nacen al amparo de la Ley de 1853, con el objetivo de fomentar el ahorro entre las clases populares de una región marcada por la emigración y la economía agraria.</p>
+        <div class="tli-fact reveal d-600">
+          <span class="tli-fact-value">1857</span>
+          <span class="tli-fact-label">Fundación de la Caja de Ahorros de A Coruña, primera entidad predecesora del grupo</span>
+        </div>
+      </div>
+    </div>
+  </article>
+  <article class="tl-item">
+    <div class="tli-inner">
+      <div class="tli-visual reveal-right">
+        <div class="tli-image">
+          <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80" alt="Expansión bancaria">
+        </div>
+      </div>
+      <div class="tli-content reveal d-200">
+        <span class="tli-year-bg reveal-fast d-400">2014</span>
+        <p class="tli-period">2011 — 2014</p>
+        <h2 class="tli-title">Nace ABANCA</h2>
+        <p class="tli-body">Tras la crisis financiera y la reestructuración del sector, el grupo venezolano-español Banesco adquiere NCG Banco y en 2014 lanza la marca ABANCA, iniciando una nueva etapa de crecimiento y modernización.</p>
+      </div>
+    </div>
+  </article>
+</div>`
+  },
+
+  milestoneStat: {
+    name: 'Milestone Stat', cls: '.milestone-stat', group: 'Línea de Tiempo',
+    html: `
+<section class="milestone-stat">
+  <div class="ms-line draw-line"></div>
+  <div class="ms-inner">
+    <span class="ms-year reveal-scale d-200">1927</span>
+    <div class="ms-content reveal d-300">
+      <div class="ms-value">127.000</div>
+      <p class="ms-label">Impositores registrados en las cajas gallegas predecesoras, consolidando el ahorro popular como base del modelo bancario atlántico.</p>
+    </div>
+    <span class="ms-context reveal-fast d-400">Dato histórico · 1927</span>
   </div>
 </section>`
   },
