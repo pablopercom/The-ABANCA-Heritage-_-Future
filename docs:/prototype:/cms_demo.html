@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>The ABANCA Heritage · CMS</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-app: #FAFAF8;
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F4F3EF;
+    --bg-tertiary: #EDECE6;
+    --text-primary: #1A1A18;
+    --text-secondary: #5F5E5A;
+    --text-tertiary: #888780;
+    --border-tertiary: rgba(26,26,24,0.10);
+    --border-secondary: rgba(26,26,24,0.20);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    --font-serif: "Cormorant Garamond", "Source Serif 4", Georgia, serif;
+    --font-mono: "Geist Mono", ui-monospace, monospace;
+    --ink: #0A1A2F;
+    --ink-2: #1F3148;
+    --paper: #F5F1EA;
+    --paper-2: #EBE5D8;
+    --accent: #B89456;
+    --accent-deep: #8A6A35;
+    --accent-pale: #E0CFA8;
+    --pos: #2D7A3F;
+  }
+  html, body { height: 100%; font-family: var(--font-sans); color: var(--text-primary); background: var(--bg-app); font-size: 14px; }
+  body { display: flex; flex-direction: column; min-height: 100vh; }
+
+  .app { display: flex; flex: 1; min-height: 0; }
+
+  /* ============ NAV RAIL ============ */
+  .nav-rail { width: 56px; flex-shrink: 0; background: var(--bg-primary); border-right: 0.5px solid var(--border-tertiary); display: flex; flex-direction: column; padding: 13px 0; transition: width 0.18s ease; z-index: 10; }
+  .nav-rail.expanded { width: 224px; }
+
+  .logo-row { display: flex; align-items: center; margin-bottom: 14px; flex-shrink: 0; padding: 0 11px; }
+  .nav-rail:not(.expanded) .logo-row { padding: 0; justify-content: center; }
+
+  .logo-link { position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; flex-shrink: 0; border-radius: 6px; transition: background 0.15s; }
+  .logo-link:hover { background: var(--bg-secondary); }
+  .logo-link .logo-box { width: 22px; height: 22px; background: var(--ink); border-radius: 5px; display: flex; align-items: center; justify-content: center; transition: opacity 0.15s; }
+  .logo-link .logo-box span { font-family: var(--font-mono); font-size: 10px; color: var(--accent); font-weight: 500; }
+  .logo-link .toggle-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; color: var(--text-secondary); }
+  .logo-link .toggle-icon i { font-size: 16px; }
+  .logo-link:hover .logo-box { opacity: 0; }
+  .logo-link:hover .toggle-icon { opacity: 1; }
+
+  .logo-home-text { display: none; margin-left: 9px; padding: 7px 10px; flex: 1; font-size: 12.5px; color: var(--text-secondary); text-decoration: none; border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+  .nav-rail.expanded .logo-home-text { display: block; }
+  .logo-home-text:hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+  .rail-section { padding: 0 11px; display: flex; flex-direction: column; gap: 2px; }
+  .nav-rail:not(.expanded) .rail-section { padding: 0; align-items: center; }
+  .section-label { display: none; font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; padding: 8px 10px 6px; }
+  .nav-rail.expanded .section-label { display: block; }
+  .rail-section + .rail-section { margin-top: 10px; }
+  .nav-rail:not(.expanded) .rail-section + .rail-section { margin-top: 14px; padding-top: 14px; border-top: 0.5px solid var(--border-tertiary); }
+
+  .nav-item { display: flex; align-items: center; gap: 9px; height: 34px; border-radius: 6px; cursor: pointer; color: var(--text-secondary); text-decoration: none; font-size: 12.5px; background: transparent; border: none; font-family: inherit; width: 34px; justify-content: center; padding: 0; }
+  .nav-rail.expanded .nav-item { width: 100%; padding: 0 10px; justify-content: flex-start; }
+  .nav-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .nav-item i { font-size: 16px; flex-shrink: 0; }
+  .nav-rail.expanded .nav-item i { font-size: 14px; }
+  .nav-item .item-label { display: none; flex: 1; }
+  .nav-rail.expanded .nav-item .item-label { display: block; }
+  .nav-item .item-meta { display: none; font-size: 10px; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .nav-rail.expanded .nav-item .item-meta { display: block; }
+  .nav-item .status-dot { display: none; width: 6px; height: 6px; border-radius: 50%; }
+  .nav-rail.expanded .nav-item .status-dot { display: block; }
+  .status-dot.pub { background: var(--pos); }
+  .status-dot.draft { background: var(--border-secondary); }
+  .nav-item.active { background: var(--paper); color: var(--accent-deep); }
+  .nav-item.active i { color: var(--accent-deep); }
+
+  .rail-bottom { margin-top: auto; padding: 12px 14px 0; border-top: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 10px; }
+  .nav-rail:not(.expanded) .rail-bottom { padding: 12px 0 0; justify-content: center; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--ink-2); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; cursor: pointer; flex-shrink: 0; }
+  .avatar-meta { flex: 1; min-width: 0; display: none; }
+  .nav-rail.expanded .avatar-meta { display: block; }
+  .avatar-meta .name { font-size: 12px; color: var(--text-primary); }
+  .avatar-meta .role { font-size: 10px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 1px; }
+
+  /* ============ CONTENT ============ */
+  .content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+  .topbar { height: 48px; background: var(--bg-primary); border-bottom: 0.5px solid var(--border-tertiary); display: flex; align-items: center; padding: 0 18px; flex-shrink: 0; gap: 14px; }
+  .topbar-title { font-family: var(--font-serif); font-size: 14px; font-weight: 500; letter-spacing: -0.01em; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-tertiary); }
+  .breadcrumb a { color: var(--text-tertiary); text-decoration: none; cursor: pointer; }
+  .breadcrumb a:hover { color: var(--text-primary); }
+  .breadcrumb .current { color: var(--text-primary); font-weight: 500; }
+  .breadcrumb i { font-size: 12px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; height: 20px; padding: 0 8px; background: rgba(10,26,47,0.08); border-radius: 3px; font-size: 9px; color: var(--ink-2); font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500; }
+  .badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-secondary); }
+
+  .top-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .btn { height: 30px; padding: 0 12px; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: var(--font-sans); border: 0.5px solid var(--border-tertiary); background: transparent; color: var(--text-secondary); }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn i { font-size: 14px; }
+  .btn-primary { background: var(--ink); color: var(--paper); border: none; font-weight: 500; padding: 0 14px; }
+  .btn-primary:hover { background: var(--ink-2); }
+  .btn-accent { background: var(--accent-deep); color: var(--paper); border: none; font-weight: 500; }
+  .btn-accent:hover { background: var(--accent); }
+  .btn-assistant { background: var(--bg-primary); color: var(--text-primary); border: 0.5px solid var(--border-secondary); font-weight: 500; padding: 0 12px 0 10px; }
+  .btn-assistant i { color: var(--accent-deep); }
+  .btn-assistant.active { background: var(--paper); border-color: var(--accent-pale); color: var(--accent-deep); }
+  .btn-assistant:hover { background: var(--paper); border-color: var(--accent-pale); color: var(--accent-deep); }
+
+  .icon-btn { width: 30px; height: 30px; background: transparent; border: none; border-radius: var(--radius-md); cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; }
+  .icon-btn:hover { background: var(--bg-secondary); }
+  .icon-btn i { font-size: 15px; }
+  .icon-btn.sm { width: 24px; height: 24px; border-radius: 4px; }
+  .icon-btn.sm i { font-size: 14px; }
+
+  /* VIEWS */
+  .view { display: none; flex: 1; flex-direction: column; min-height: 0; }
+  .view.active { display: flex; }
+
+  /* LISTADO */
+  .listing-toolbar { padding: 22px 24px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .chip { display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; background: var(--bg-secondary); border-radius: var(--radius-md); font-size: 12px; }
+  .chip .ch-label { color: var(--text-tertiary); }
+  .chip .ch-value { color: var(--text-primary); font-weight: 500; }
+  .search-wrap { position: relative; }
+  .search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text-tertiary); }
+  .search-wrap input { width: 160px; height: 30px; padding: 0 10px 0 28px; font-size: 12px; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); background: var(--bg-secondary); font-family: inherit; outline: none; }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .view-toggle { display: flex; height: 30px; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); overflow: hidden; }
+  .view-toggle button { width: 32px; background: transparent; border: none; cursor: pointer; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; border-right: 0.5px solid var(--border-tertiary); }
+  .view-toggle button:last-child { border-right: none; }
+  .view-toggle button.active { background: var(--paper); color: var(--accent-deep); }
+  .view-toggle button i { font-size: 14px; }
+  .toolbar-spacer { flex: 1; }
+  .cards-grid { padding: 6px 24px 22px; overflow: auto; flex: 1; }
+  .cards-grid .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .page-card { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: border-color 0.15s; text-decoration: none; color: inherit; display: block; }
+  .page-card:hover { border-color: var(--border-secondary); }
+  .page-thumb { aspect-ratio: 16/10; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 14px; }
+  .page-thumb.home { background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%); align-items: flex-end; justify-content: flex-start; }
+  .page-thumb.home .thumb-content { font-family: var(--font-serif); font-size: 13px; color: var(--paper); line-height: 1.1; }
+  .page-thumb.home .thumb-content em { color: var(--accent); font-style: italic; }
+  .page-thumb.prensa { background: var(--paper); text-align: center; }
+  .page-thumb.prensa .thumb-eyebrow { font-family: var(--font-mono); font-size: 9px; color: var(--accent-deep); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .page-thumb.prensa .thumb-content { font-family: var(--font-serif); font-size: 14px; color: var(--ink); line-height: 1.1; }
+  .page-thumb.timeline { background: var(--ink); text-align: center; }
+  .page-thumb.timeline .thumb-eyebrow { font-family: var(--font-mono); font-size: 9px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .page-thumb.timeline .thumb-arc { font-family: var(--font-serif); display: flex; align-items: baseline; justify-content: center; gap: 8px; color: var(--paper); }
+  .page-thumb.timeline .thumb-arc .year { font-size: 20px; }
+  .page-thumb.timeline .thumb-arc .sep { font-size: 14px; color: var(--accent); }
+  .thumb-badge { position: absolute; top: 8px; right: 8px; padding: 2px 7px; border-radius: 3px; font-size: 9px; font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500; }
+  .thumb-badge.pub { background: rgba(245,241,234,0.92); color: var(--pos); }
+  .thumb-badge.draft-light { background: rgba(10,26,47,0.08); color: var(--ink-2); }
+  .thumb-badge.draft-dark { background: rgba(245,241,234,0.18); color: var(--paper); }
+  .page-card-body { padding: 12px 14px; }
+  .page-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  .page-card-head h3 { font-size: 14px; font-weight: 500; margin: 0; color: var(--text-primary); }
+  .page-card-head .url { font-size: 10px; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .page-card-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 0.5px solid var(--border-tertiary); margin-top: 8px; }
+  .page-card-foot .meta { font-size: 11px; color: var(--text-secondary); }
+  .page-card-foot .time { font-size: 10px; color: var(--text-tertiary); }
+  .new-card { background: transparent; border: 1px dashed var(--border-secondary); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; min-height: 200px; cursor: pointer; }
+  .new-card:hover { border-color: var(--accent); background: var(--paper); }
+  .new-card .inner { text-align: center; padding: 14px; }
+  .new-card .circle { width: 34px; height: 34px; border-radius: 50%; background: var(--paper); display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; }
+  .new-card .circle i { font-size: 16px; color: var(--accent-deep); }
+  .new-card .ttl { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+  .new-card .sub { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+
+  /* EDICIÓN */
+  .workspace { display: flex; flex: 1; min-height: 0; }
+  .modules-panel { width: 260px; flex-shrink: 0; background: var(--bg-primary); border-right: 0.5px solid var(--border-tertiary); display: flex; flex-direction: column; }
+  .panel-head { padding: 14px 14px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+  .modules-list { flex: 1; padding: 0 10px; overflow: auto; }
+  .mod-row { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 6px; cursor: pointer; background: transparent; border: 0.5px solid transparent; margin-bottom: 2px; }
+  .mod-row:hover { background: var(--bg-secondary); }
+  .mod-row.active { background: var(--paper); border-color: var(--accent-pale); }
+  .mod-row.active .mod-name, .mod-row.active .mod-num, .mod-row.active .mod-icon, .mod-row.active .mod-grip { color: var(--accent-deep); }
+  .mod-grip { font-size: 14px; color: var(--text-tertiary); }
+  .mod-num { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); width: 14px; }
+  .mod-icon { font-size: 14px; color: var(--text-secondary); }
+  .mod-name { flex: 1; font-size: 12.5px; color: var(--text-primary); }
+  .add-module-btn { width: calc(100% - 4px); margin: 8px 2px 0; padding: 10px 10px; background: transparent; border: 1px dashed var(--border-secondary); border-radius: 6px; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11.5px; font-family: inherit; }
+  .add-module-btn:hover { border-color: var(--accent); color: var(--accent-deep); background: var(--paper); }
+  .add-module-btn i { font-size: 13px; }
+  .page-config { padding: 14px; border-top: 0.5px solid var(--border-tertiary); background: var(--bg-secondary); }
+  .config-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; padding: 4px 0; }
+  .config-row span:first-child { color: var(--text-secondary); }
+  .config-row span:last-child { color: var(--text-primary); }
+  .config-row.mono span:last-child { font-family: var(--font-mono); font-size: 11px; }
+
+  .canvas { flex: 1; background: var(--bg-tertiary); padding: 32px 40px; overflow: auto; }
+  .canvas-inner { width: 100%; max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  .module-card { background: var(--bg-primary); border-radius: var(--radius-md); position: relative; cursor: pointer; border: 0.5px solid var(--border-tertiary); overflow: hidden; }
+  .module-card:hover { border-color: var(--border-secondary); }
+  .module-card.editing { border: 2px solid var(--accent); }
+  .module-label { position: absolute; top: 10px; left: 12px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; z-index: 2; padding: 2px 8px; border-radius: 3px; }
+  .module-label.dark { color: rgba(245,241,234,0.45); }
+  .module-label.light { color: rgba(10,26,47,0.40); }
+  .module-label.editing-state { color: var(--accent-deep); background: var(--paper); font-weight: 500; }
+  .insert-divider { display: flex; align-items: center; gap: 10px; padding: 2px 0; }
+  .insert-divider .line { flex: 1; height: 0.5px; background: var(--border-tertiary); }
+  .insert-divider button { width: 26px; height: 26px; background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: 50%; cursor: pointer; color: var(--accent-deep); display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .insert-divider button:hover { background: var(--paper); border-color: var(--accent); transform: scale(1.05); }
+  .insert-divider button i { font-size: 13px; }
+
+  /* Module renderings */
+  .hero-mod { background: var(--ink); padding: 42px 36px 32px; }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
+  .hero-title { font-family: var(--font-serif); font-size: 44px; color: var(--paper); line-height: 1.02; letter-spacing: -0.015em; margin-bottom: 16px; }
+  .hero-lead { font-family: var(--font-serif); font-size: 16px; color: rgba(245,241,234,0.6); line-height: 1.5; max-width: 460px; margin-bottom: 24px; }
+  .hero-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero-filter { font-family: var(--font-mono); font-size: 10px; padding: 5px 12px; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid rgba(245,241,234,0.15); color: rgba(245,241,234,0.6); }
+  .hero-filter.active { border-color: var(--accent); color: var(--accent); }
+  .featured-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 42px 36px 36px; align-items: center; }
+  .featured-img { aspect-ratio: 16/10; background: linear-gradient(135deg, var(--ink-2) 0%, var(--ink) 100%); display: flex; align-items: center; justify-content: center; }
+  .featured-img i { font-size: 36px; color: var(--accent); opacity: 0.55; }
+  .featured-content .pf-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+  .featured-content .pf-source { font-family: var(--font-mono); font-size: 11px; color: var(--accent-deep); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  .featured-content .pf-title { font-family: var(--font-serif); font-size: 24px; color: var(--ink); line-height: 1.12; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .featured-content .pf-excerpt { font-family: var(--font-serif); font-size: 14px; color: rgba(10,26,47,0.6); line-height: 1.55; }
+  .grid-mod { background: var(--paper); padding: 42px 36px 36px; }
+  .grid-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 22px; }
+  .grid-head .gh-title { font-family: var(--font-serif); font-size: 20px; color: var(--ink); }
+  .grid-head .gh-count { font-family: var(--font-mono); font-size: 11px; color: rgba(10,26,47,0.55); letter-spacing: 0.05em; }
+  .grid-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .grid-item { background: var(--bg-primary); padding: 16px; }
+  .gi-source { font-family: var(--font-mono); font-size: 9px; color: var(--accent-deep); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .gi-title { font-family: var(--font-serif); font-size: 13px; color: var(--ink); line-height: 1.25; }
+
+  /* Props panel */
+  .props-panel { width: 320px; flex-shrink: 0; background: var(--bg-primary); border-left: 0.5px solid var(--border-tertiary); display: flex; flex-direction: column; }
+  .props-head { padding: 14px 16px 13px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 10px; }
+  .props-head i.lead { font-size: 15px; color: var(--accent-deep); }
+  .props-head .title { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .props-head .sub { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-mono); margin-top: 1px; }
+  .props-body { flex: 1; padding: 18px 16px; overflow: auto; display: flex; flex-direction: column; gap: 16px; }
+  .field-group label { display: block; font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 7px; }
+  .input { width: 100%; height: 34px; padding: 0 12px; font-size: 13px; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; outline: none; }
+  .input:focus { border-color: var(--accent); }
+  .textarea { width: 100%; padding: 10px 12px; font-size: 13px; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; outline: none; resize: vertical; line-height: 1.5; }
+  .textarea:focus { border-color: var(--accent); }
+  .image-field { border: 0.5px dashed var(--border-secondary); border-radius: var(--radius-md); padding: 12px; display: flex; align-items: center; gap: 12px; background: var(--bg-secondary); }
+  .image-thumb { width: 46px; height: 46px; background: linear-gradient(135deg, var(--ink-2), var(--ink)); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .image-thumb i { font-size: 18px; color: var(--accent); }
+  .image-info { flex: 1; min-width: 0; }
+  .image-info .name { font-size: 12px; color: var(--text-primary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .image-info button { background: transparent; border: none; color: var(--accent-deep); font-size: 11px; padding: 0; cursor: pointer; text-decoration: underline; margin-top: 2px; font-family: inherit; }
+
+  /* Assistant */
+  .assistant-panel { width: 340px; flex-shrink: 0; background: var(--bg-primary); border-left: 0.5px solid var(--border-tertiary); display: none; flex-direction: column; }
+  .assistant-panel.open { display: flex; }
+  .assistant-head { height: 44px; padding: 0 14px 0 16px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 10px; }
+  .assistant-head .lead { font-size: 15px; color: var(--accent-deep); }
+  .assistant-head .title { flex: 1; font-size: 13px; font-weight: 500; }
+  .assistant-body { flex: 1; padding: 18px 16px; overflow: auto; display: flex; flex-direction: column; justify-content: center; }
+  .assistant-welcome { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 24px; }
+  .assistant-welcome .av { width: 40px; height: 40px; border-radius: 50%; background: var(--paper); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .assistant-welcome .av i { font-size: 18px; color: var(--accent-deep); }
+  .assistant-welcome .greet { font-family: var(--font-serif); font-size: 17px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .assistant-welcome .copy { font-size: 12px; color: var(--text-secondary); line-height: 1.5; max-width: 240px; }
+  .suggestions-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; margin-bottom: 8px; text-align: center; }
+  .suggestions { display: flex; flex-direction: column; gap: 6px; }
+  .suggestion { display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 12px; background: var(--bg-secondary); border: 0.5px solid var(--border-tertiary); border-radius: 8px; font-size: 12px; color: var(--text-primary); line-height: 1.4; text-align: left; cursor: pointer; font-family: inherit; }
+  .suggestion:hover { background: var(--paper); color: var(--accent-deep); border-color: var(--accent-pale); }
+  .suggestion i { font-size: 13px; color: var(--accent-deep); flex-shrink: 0; }
+  .assistant-input { padding: 12px 14px 14px; border-top: 0.5px solid var(--border-tertiary); }
+  .assistant-input .wrap { background: var(--bg-secondary); border: 0.5px solid var(--border-tertiary); border-radius: 10px; padding: 8px 10px; }
+  .assistant-input textarea { width: 100%; border: none; background: transparent; resize: none; font-size: 13px; font-family: inherit; color: var(--text-primary); outline: none; padding: 0; line-height: 1.4; }
+  .assistant-input .row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .assistant-input .send { width: 26px; height: 26px; background: var(--accent-deep); color: var(--paper); border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: auto; }
+  .assistant-input .send i { font-size: 14px; }
+
+  /* ============ CHAT CONVERSATION ============ */
+  .assistant-body.has-conversation { justify-content: flex-start; padding: 18px 16px 8px; }
+  .conversation { display: flex; flex-direction: column; gap: 14px; }
+  .msg { display: flex; flex-direction: column; max-width: 100%; }
+  .msg.user { align-items: flex-end; }
+  .msg.ai { align-items: flex-start; }
+  .msg-bubble { padding: 10px 13px; border-radius: 12px; font-size: 13px; line-height: 1.5; max-width: 90%; }
+  .msg.user .msg-bubble { background: var(--ink); color: var(--paper); border-bottom-right-radius: 4px; }
+  .msg.ai .msg-bubble { background: var(--bg-secondary); color: var(--text-primary); border-bottom-left-radius: 4px; }
+  .msg-bubble p + p { margin-top: 6px; }
+  .msg-author { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-tertiary); margin-bottom: 4px; font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; }
+  .msg-author i { font-size: 11px; color: var(--accent-deep); }
+
+  .page-proposal { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: 10px; padding: 14px; margin-top: 8px; width: 100%; max-width: 100%; }
+  .pp-head { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 0.5px solid var(--border-tertiary); margin-bottom: 12px; }
+  .pp-icon { width: 32px; height: 32px; border-radius: 7px; background: var(--paper); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .pp-icon i { font-size: 16px; color: var(--accent-deep); }
+  .pp-head-text { flex: 1; min-width: 0; }
+  .pp-name { font-family: var(--font-serif); font-size: 15px; font-weight: 500; color: var(--text-primary); letter-spacing: -0.005em; }
+  .pp-url { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); margin-top: 1px; }
+  .pp-section-label { font-size: 9px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; margin-bottom: 8px; }
+  .pp-modules { display: flex; flex-direction: column; gap: 4px; }
+  .pp-module { display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: var(--bg-secondary); border-radius: 5px; font-size: 11.5px; color: var(--text-primary); }
+  .pp-module i { font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+  .pp-module .num { font-family: var(--font-mono); font-size: 9px; color: var(--text-tertiary); width: 12px; }
+  .pp-module .src { font-size: 9px; color: var(--text-tertiary); font-family: var(--font-mono); margin-left: auto; }
+
+  .msg-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .msg-btn { height: 28px; padding: 0 12px; font-size: 11.5px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: inherit; border: 0.5px solid var(--border-tertiary); background: var(--bg-primary); color: var(--text-secondary); }
+  .msg-btn:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .msg-btn.primary { background: var(--accent-deep); color: var(--paper); border: none; font-weight: 500; }
+  .msg-btn.primary:hover { background: var(--accent); }
+  .msg-btn i { font-size: 12px; }
+
+  .page-created { background: var(--bg-primary); border: 0.5px solid var(--pos); border-radius: 10px; padding: 12px 14px; margin-top: 8px; display: flex; align-items: center; gap: 10px; max-width: 100%; }
+  .page-created .check { width: 26px; height: 26px; border-radius: 50%; background: rgba(45,122,63,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .page-created .check i { font-size: 14px; color: var(--pos); }
+  .page-created .text { flex: 1; min-width: 0; }
+  .page-created .text .ttl { font-size: 12.5px; color: var(--text-primary); font-weight: 500; }
+  .page-created .text .sub { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+  .page-created a.open-link { font-size: 11px; color: var(--accent-deep); text-decoration: none; padding: 5px 10px; border-radius: 5px; background: var(--paper); border: 0.5px solid var(--accent-pale); flex-shrink: 0; }
+  .page-created a.open-link:hover { background: var(--accent-pale); }
+
+  /* ============ IMÁGENES (vista completa) ============ */
+  .images-toolbar { padding: 22px 24px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .images-tabs { display: flex; gap: 4px; }
+  .images-tab { height: 30px; padding: 0 12px; font-size: 12px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: inherit; border: none; background: transparent; color: var(--text-secondary); }
+  .images-tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .images-tab.active { background: var(--paper); color: var(--accent-deep); font-weight: 500; }
+  .images-tab .tab-count { font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary); padding-left: 4px; }
+  .images-tab.active .tab-count { color: var(--accent-deep); }
+
+  .images-grid-wrap { padding: 6px 24px 22px; overflow: auto; flex: 1; }
+  .images-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .image-card { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.15s; position: relative; }
+  .image-card:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .image-card.selected { border: 2px solid var(--accent); }
+  .image-thumb-wrap { aspect-ratio: 1; background: var(--bg-secondary); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .image-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .image-thumb-wrap .placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .image-thumb-wrap .placeholder i { font-size: 28px; color: var(--text-tertiary); opacity: 0.6; }
+  .image-thumb-wrap .placeholder.dark { background: linear-gradient(135deg, var(--ink-2), var(--ink)); }
+  .image-thumb-wrap .placeholder.dark i { color: var(--accent); opacity: 0.55; }
+  .image-thumb-wrap .placeholder.paper-bg { background: var(--paper); }
+  .image-thumb-wrap .placeholder.paper-bg i { color: var(--accent-deep); opacity: 0.45; }
+  .image-thumb-wrap .placeholder.archive { background: linear-gradient(135deg, #C5B89C, #8F7E60); }
+  .image-thumb-wrap .placeholder.archive i { color: var(--paper); opacity: 0.7; }
+  .image-thumb-wrap .placeholder.sea { background: linear-gradient(160deg, #4A6E80, #1F3148); }
+  .image-thumb-wrap .placeholder.sea i { color: var(--paper); opacity: 0.55; }
+
+  .image-card-body { padding: 10px 12px; }
+  .image-card-name { font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .image-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .img-tag { display: inline-flex; align-items: center; height: 18px; padding: 0 7px; background: var(--bg-secondary); border-radius: 3px; font-size: 10px; color: var(--text-secondary); font-family: var(--font-mono); letter-spacing: 0.02em; }
+  .img-usage { font-size: 10px; color: var(--text-tertiary); display: flex; align-items: center; gap: 3px; }
+  .img-usage i { font-size: 11px; }
+  .img-usage.unused { color: var(--text-tertiary); opacity: 0.6; }
+
+  .upload-card { background: transparent; border: 1px dashed var(--border-secondary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; aspect-ratio: 1; cursor: pointer; flex-direction: column; gap: 8px; }
+  .upload-card:hover { border-color: var(--accent); background: var(--paper); }
+  .upload-card .up-circle { width: 36px; height: 36px; border-radius: 50%; background: var(--paper); display: flex; align-items: center; justify-content: center; }
+  .upload-card .up-circle i { font-size: 16px; color: var(--accent-deep); }
+  .upload-card .up-ttl { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+  .upload-card .up-sub { font-size: 10px; color: var(--text-tertiary); padding: 0 14px; text-align: center; }
+
+  /* ============ IMAGE PICKER (modal contextual) ============ */
+  .image-picker { position: fixed; top: 0; right: -540px; width: 540px; height: 100vh; background: var(--bg-primary); border-left: 0.5px solid var(--border-tertiary); display: flex; flex-direction: column; z-index: 100; box-shadow: -8px 0 24px rgba(0,0,0,0.08); transition: right 0.22s ease; }
+  .image-picker.open { right: 0; }
+  .picker-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.18); opacity: 0; pointer-events: none; transition: opacity 0.22s ease; z-index: 99; }
+  .picker-backdrop.open { opacity: 1; pointer-events: auto; }
+  .picker-head { padding: 18px 22px 14px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .picker-head .title-block { flex: 1; }
+  .picker-head .title { font-family: var(--font-serif); font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
+  .picker-head .sub { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+  .picker-search { padding: 14px 22px; border-bottom: 0.5px solid var(--border-tertiary); flex-shrink: 0; display: flex; gap: 8px; }
+  .picker-search .wrap { position: relative; flex: 1; }
+  .picker-search i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text-tertiary); }
+  .picker-search input { width: 100%; height: 34px; padding: 0 12px 0 34px; font-size: 13px; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); background: var(--bg-secondary); font-family: inherit; outline: none; }
+  .picker-search input:focus { border-color: var(--accent); }
+  .picker-body { flex: 1; padding: 16px 22px; overflow: auto; }
+  .picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .picker-foot { padding: 14px 22px; border-top: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 10px; justify-content: flex-end; flex-shrink: 0; background: var(--bg-app); }
+
+  /* Detail (popover de detalle al click) */
+  .image-detail { display: none; }
+
+  /* ============ MODAL NEW PAGE ============ */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(10,26,47,0.42); opacity: 0; pointer-events: none; transition: opacity 0.18s ease; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .modal { background: var(--bg-primary); border-radius: var(--radius-lg); width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(10,26,47,0.18); transform: translateY(8px); transition: transform 0.18s ease; display: flex; flex-direction: column; max-height: calc(100vh - 48px); overflow: hidden; }
+  .modal-backdrop.open .modal { transform: translateY(0); }
+  .modal-head { padding: 20px 24px 16px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .modal-head .title-block { flex: 1; }
+  .modal-head .title { font-family: var(--font-serif); font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .modal-head .sub { font-size: 12px; color: var(--text-tertiary); margin-top: 3px; }
+  .modal-body { padding: 22px 24px; overflow: auto; display: flex; flex-direction: column; gap: 18px; }
+  .modal-foot { padding: 14px 24px 18px; border-top: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 10px; justify-content: flex-end; flex-shrink: 0; background: var(--bg-app); }
+
+  .input-with-prefix { position: relative; display: flex; align-items: center; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); background: var(--bg-primary); transition: border-color 0.15s; }
+  .input-with-prefix:focus-within { border-color: var(--accent); }
+  .input-with-prefix .prefix { padding: 0 4px 0 12px; font-family: var(--font-mono); font-size: 13px; color: var(--text-tertiary); }
+  .input-with-prefix input { flex: 1; height: 34px; padding: 0 12px 0 0; font-size: 13px; border: none; background: transparent; color: var(--text-primary); font-family: var(--font-mono); outline: none; }
+
+  .field-help { font-size: 11px; color: var(--text-tertiary); margin-top: 6px; line-height: 1.4; }
+
+  .radio-group { display: flex; flex-direction: column; gap: 8px; }
+  .radio-card { display: flex; align-items: flex-start; gap: 11px; padding: 12px 14px; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); cursor: pointer; transition: all 0.15s; background: var(--bg-primary); }
+  .radio-card:hover { border-color: var(--border-secondary); background: var(--bg-secondary); }
+  .radio-card.selected { border-color: var(--accent); background: var(--paper); }
+  .radio-card .radio-circle { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--border-secondary); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s; }
+  .radio-card.selected .radio-circle { border-color: var(--accent-deep); }
+  .radio-card.selected .radio-circle::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-deep); }
+  .radio-card .radio-content { flex: 1; }
+  .radio-card .radio-title { font-size: 13px; color: var(--text-primary); font-weight: 500; margin-bottom: 2px; }
+  .radio-card .radio-desc { font-size: 11.5px; color: var(--text-tertiary); line-height: 1.4; }
+
+  .source-select { margin-top: 10px; padding: 10px 12px; background: var(--bg-secondary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); display: none; }
+  .radio-card.selected .source-select { display: block; }
+  .source-select label { display: block; font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 6px; }
+  .source-select select { width: 100%; height: 32px; padding: 0 10px; font-size: 12.5px; border: 0.5px solid var(--border-tertiary); border-radius: 6px; background: var(--bg-primary); color: var(--text-primary); font-family: inherit; outline: none; cursor: pointer; }
+  .source-select select:focus { border-color: var(--accent); }
+
+  /* ============ MODULE SELECTOR ============ */
+  .module-selector { position: fixed; top: 0; right: -480px; width: 480px; height: 100vh; background: var(--bg-primary); border-left: 0.5px solid var(--border-tertiary); display: flex; flex-direction: column; z-index: 100; box-shadow: -8px 0 24px rgba(0,0,0,0.08); transition: right 0.22s ease; }
+  .module-selector.open { right: 0; }
+  .selector-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.18); opacity: 0; pointer-events: none; transition: opacity 0.22s ease; z-index: 99; }
+  .selector-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .selector-head { padding: 18px 22px 14px; border-bottom: 0.5px solid var(--border-tertiary); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .selector-head .title-block { flex: 1; }
+  .selector-head .title { font-family: var(--font-serif); font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
+  .selector-head .sub { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+  .selector-search { padding: 14px 22px; border-bottom: 0.5px solid var(--border-tertiary); flex-shrink: 0; }
+  .selector-search .wrap { position: relative; }
+  .selector-search i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text-tertiary); }
+  .selector-search input { width: 100%; height: 34px; padding: 0 12px 0 34px; font-size: 13px; border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); background: var(--bg-secondary); font-family: inherit; outline: none; }
+  .selector-search input:focus { border-color: var(--accent); }
+
+  .selector-body { flex: 1; padding: 18px 22px 22px; overflow: auto; }
+  .selector-category { margin-bottom: 26px; }
+  .selector-category:last-child { margin-bottom: 0; }
+  .selector-category .cat-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .selector-category .cat-label .count { color: var(--text-tertiary); font-family: var(--font-mono); }
+  .selector-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .selector-card { background: var(--bg-primary); border: 0.5px solid var(--border-tertiary); border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; }
+  .selector-card:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+  .selector-thumb { aspect-ratio: 16/10; background: var(--bg-secondary); position: relative; overflow: hidden; }
+  .selector-card-body { padding: 10px 12px; }
+  .selector-card-name { font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+  .selector-card-desc { font-size: 10px; color: var(--text-tertiary); line-height: 1.35; }
+
+  /* Mini renderings dentro de los thumbs del selector */
+  .mini-hero { background: var(--ink); padding: 8px 10px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .mini-hero .me { font-family: var(--font-mono); font-size: 5px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .mini-hero .mt { font-family: var(--font-serif); font-size: 14px; color: var(--paper); line-height: 1; letter-spacing: -0.01em; }
+  .mini-press-hero { background: var(--ink); padding: 7px 9px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .mini-press-hero .me { font-family: var(--font-mono); font-size: 5px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+  .mini-press-hero .mt { font-family: var(--font-serif); font-size: 11px; color: var(--paper); line-height: 1; }
+  .mini-press-hero .mf { display: flex; gap: 2px; margin-top: 4px; }
+  .mini-press-hero .mf span { font-family: var(--font-mono); font-size: 4px; padding: 1px 3px; border: 0.5px solid rgba(245,241,234,0.2); color: rgba(245,241,234,0.5); text-transform: uppercase; }
+  .mini-press-hero .mf span.on { border-color: var(--accent); color: var(--accent); }
+  .mini-featured { background: var(--bg-primary); padding: 7px 9px; height: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; align-items: center; }
+  .mini-featured .img { aspect-ratio: 16/10; background: linear-gradient(135deg, var(--ink-2), var(--ink)); display: flex; align-items: center; justify-content: center; }
+  .mini-featured .img i { font-size: 10px; color: var(--accent); opacity: 0.6; }
+  .mini-featured .txt .src { font-family: var(--font-mono); font-size: 4px; color: var(--accent-deep); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2px; }
+  .mini-featured .txt .ttl { font-family: var(--font-serif); font-size: 7px; color: var(--ink); line-height: 1.1; }
+  .mini-grid { background: var(--paper); padding: 7px; height: 100%; }
+  .mini-grid .hd { display: flex; justify-content: space-between; margin-bottom: 5px; font-family: var(--font-serif); font-size: 6px; color: var(--ink); }
+  .mini-grid .gt { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; }
+  .mini-grid .it { background: var(--bg-primary); padding: 3px; }
+  .mini-grid .it .s { font-family: var(--font-mono); font-size: 3px; color: var(--accent-deep); letter-spacing: 0.05em; margin-bottom: 1px; }
+  .mini-grid .it .t { font-family: var(--font-serif); font-size: 4px; color: var(--ink); line-height: 1.1; }
+  .mini-timeline-hero { background: var(--ink); padding: 8px; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .mini-timeline-hero .me { font-family: var(--font-mono); font-size: 5px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .mini-timeline-hero .arc { font-family: var(--font-serif); display: flex; align-items: baseline; gap: 5px; color: var(--paper); }
+  .mini-timeline-hero .arc .y { font-size: 14px; }
+  .mini-timeline-hero .arc .s { font-size: 9px; color: var(--accent); }
+  .mini-timeline-item { background: var(--bg-primary); padding: 7px; height: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; align-items: center; }
+  .mini-timeline-item .img { aspect-ratio: 4/3; background: linear-gradient(135deg, var(--ink-2), var(--ink)); }
+  .mini-timeline-item .txt .p { font-family: var(--font-mono); font-size: 4px; color: var(--accent-deep); letter-spacing: 0.05em; margin-bottom: 2px; }
+  .mini-timeline-item .txt .t { font-family: var(--font-serif); font-size: 8px; color: var(--ink); line-height: 1.05; }
+  .mini-milestone { background: var(--ink); padding: 8px 9px; height: 100%; display: flex; align-items: center; gap: 6px; position: relative; }
+  .mini-milestone::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 0.5px; background: rgba(245,241,234,0.15); }
+  .mini-milestone .y { font-family: var(--font-serif); font-size: 16px; color: var(--paper); opacity: 0.15; line-height: 1; flex-shrink: 0; position: relative; }
+  .mini-milestone .v { font-family: var(--font-mono); font-size: 10px; color: var(--accent); line-height: 1; position: relative; }
+  .mini-manifesto { background: var(--paper); padding: 9px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .mini-manifesto .me { font-family: var(--font-mono); font-size: 4px; color: var(--accent-deep); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .mini-manifesto .t { font-family: var(--font-serif); font-size: 9px; color: var(--ink); line-height: 1.15; }
+  .mini-stats { background: var(--paper); padding: 7px; height: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; align-items: center; }
+  .mini-stats .st { text-align: center; }
+  .mini-stats .v { font-family: var(--font-mono); font-size: 10px; color: var(--accent-deep); font-weight: 500; line-height: 1; }
+  .mini-stats .l { font-family: var(--font-mono); font-size: 3.5px; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+  .mini-quote { background: var(--bg-primary); padding: 9px; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .mini-quote .q { font-family: var(--font-serif); font-style: italic; font-size: 9px; color: var(--ink); line-height: 1.15; }
+  .mini-quote .a { font-family: var(--font-mono); font-size: 4px; color: var(--accent-deep); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+  .mini-timeline-h { background: var(--bg-primary); padding: 6px; height: 100%; display: flex; align-items: center; gap: 4px; }
+  .mini-timeline-h .yr { font-family: var(--font-mono); font-size: 6px; color: var(--accent-deep); }
+  .mini-timeline-h .ev { flex: 1; height: 0.5px; background: var(--border-secondary); position: relative; }
+  .mini-timeline-h .ev::before { content: ''; position: absolute; left: 30%; top: -1.5px; width: 3px; height: 3px; border-radius: 50%; background: var(--accent); }
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="nav-rail" id="navRail">
+    <div class="logo-row">
+      <a class="logo-link" href="#" id="logoLink" title="Plegar/desplegar sidebar" aria-label="Plegar o desplegar sidebar">
+        <div class="logo-box"><span>//</span></div>
+        <div class="toggle-icon"><i class="ti ti-layout-sidebar-left-expand" id="toggleIcon"></i></div>
+      </a>
+      <a class="logo-home-text" href="#listado" data-view-href="#listado">Abanca CMS</a>
+    </div>
+
+    <div class="rail-section">
+      <span class="section-label">Páginas</span>
+      <a class="nav-item" href="#editar/home" title="Home" data-view-href="#editar/home">
+        <i class="ti ti-home"></i>
+        <span class="item-label">Home</span>
+        <span class="status-dot pub"></span>
+      </a>
+      <a class="nav-item" href="#editar/prensa" title="Sala de Prensa" data-view-href="#editar/prensa">
+        <i class="ti ti-news"></i>
+        <span class="item-label">Sala de Prensa</span>
+        <span class="status-dot draft"></span>
+      </a>
+      <a class="nav-item" href="#editar/timeline" title="Línea de Tiempo" data-view-href="#editar/timeline">
+        <i class="ti ti-timeline"></i>
+        <span class="item-label">Línea de Tiempo</span>
+        <span class="status-dot draft"></span>
+      </a>
+    </div>
+
+    <div class="rail-section">
+      <span class="section-label">Recursos</span>
+      <a class="nav-item" href="#imagenes" title="Imágenes" data-view-href="#imagenes">
+        <i class="ti ti-photo"></i>
+        <span class="item-label">Imágenes</span>
+        <span class="item-meta">24</span>
+      </a>
+      <a class="nav-item" href="#" title="Sistema de Diseño">
+        <i class="ti ti-components"></i>
+        <span class="item-label">Sistema de Diseño</span>
+        <span class="item-meta">13</span>
+      </a>
+    </div>
+
+    <div class="rail-bottom">
+      <div class="avatar">PP</div>
+      <div class="avatar-meta">
+        <div class="name">Pablo Pérez</div>
+        <div class="role">Editor</div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="content">
+
+    <!-- VISTA IMÁGENES -->
+    <div class="view" id="view-imagenes">
+      <div class="topbar">
+        <div class="breadcrumb">
+          <a href="#listado" data-view-href="#listado">Inicio</a>
+          <i class="ti ti-chevron-right"></i>
+          <span class="current">Imágenes</span>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-assistant" id="assistantBtnImagenes"><i class="ti ti-sparkles"></i>Asistente</button>
+        </div>
+      </div>
+
+      <main style="flex:1; display:flex; flex-direction:column; min-width:0; background:var(--bg-primary);">
+        <div class="images-toolbar">
+          <div class="images-tabs">
+            <button class="images-tab active"><i class="ti ti-photo"></i>Todas<span class="tab-count">24</span></button>
+            <button class="images-tab"><i class="ti ti-building-bank"></i>Edificios<span class="tab-count">8</span></button>
+            <button class="images-tab"><i class="ti ti-archive"></i>Archivo<span class="tab-count">6</span></button>
+            <button class="images-tab"><i class="ti ti-users"></i>Equipo<span class="tab-count">5</span></button>
+            <button class="images-tab"><i class="ti ti-photo-edit"></i>Editorial<span class="tab-count">5</span></button>
+          </div>
+          <div class="toolbar-spacer"></div>
+          <div class="search-wrap">
+            <i class="ti ti-search"></i>
+            <input type="text" placeholder="Buscar imagen...">
+          </div>
+          <button class="btn btn-accent" aria-label="Subir imagen" style="padding:0 14px;"><i class="ti ti-upload" style="font-size:14px;"></i>Subir imagen</button>
+        </div>
+
+        <div class="images-grid-wrap">
+          <div class="images-grid">
+
+            <div class="upload-card">
+              <div class="up-circle"><i class="ti ti-cloud-upload"></i></div>
+              <div class="up-ttl">Subir imagen</div>
+              <div class="up-sub">Arrastra o haz clic</div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder dark"><i class="ti ti-building-bank"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">sede-abanca-coruna.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Edificios</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>2</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder sea"><i class="ti ti-wave-sine"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">atlantico-norte.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Editorial</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>3</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder archive"><i class="ti ti-camera-old"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">betanzos-1920.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Archivo</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder paper-bg"><i class="ti ti-user"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">escotet-juan-carlos.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Equipo</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder dark"><i class="ti ti-building-skyscraper"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">torre-madrid.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Edificios</span>
+                  <span class="img-usage unused"><i class="ti ti-link-off"></i>0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder archive"><i class="ti ti-news"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">prensa-1957.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Archivo</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>2</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder sea"><i class="ti ti-anchor"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">puerto-coruna.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Editorial</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder paper-bg"><i class="ti ti-users-group"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">consejo-direccion.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Equipo</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder dark"><i class="ti ti-window"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">interior-sede.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Edificios</span>
+                  <span class="img-usage unused"><i class="ti ti-link-off"></i>0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder archive"><i class="ti ti-coin"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">caja-ahorros-1857.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Archivo</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-card">
+              <div class="image-thumb-wrap"><div class="placeholder sea"><i class="ti ti-ship"></i></div></div>
+              <div class="image-card-body">
+                <div class="image-card-name">galicia-marina.jpg</div>
+                <div class="image-card-meta">
+                  <span class="img-tag">Editorial</span>
+                  <span class="img-usage"><i class="ti ti-link"></i>2</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- VISTA LISTADO -->
+    <div class="view" id="view-listado">
+      <div class="topbar">
+        <div class="topbar-title">The ABANCA Heritage</div>
+        <div class="top-actions">
+          <button class="btn btn-assistant" id="assistantBtnListado"><i class="ti ti-sparkles"></i>Asistente</button>
+        </div>
+      </div>
+
+      <div style="display:flex; flex:1; min-height:0;">
+        <main style="flex:1; display:flex; flex-direction:column; min-width:0; background:var(--bg-primary);">
+          <div class="listing-toolbar">
+            <div style="display:flex; gap:8px;">
+              <div class="chip">
+                <span class="status-dot" style="display:block; background:var(--pos);"></span>
+                <span class="ch-label">Publicadas</span>
+                <span class="ch-value">1</span>
+              </div>
+              <div class="chip">
+                <span class="status-dot" style="display:block; background:var(--border-secondary);"></span>
+                <span class="ch-label">Borradores</span>
+                <span class="ch-value">2</span>
+              </div>
+            </div>
+            <div class="search-wrap">
+              <i class="ti ti-search"></i>
+              <input type="text" placeholder="Buscar...">
+            </div>
+            <div class="view-toggle">
+              <button aria-label="Vista tabla"><i class="ti ti-list"></i></button>
+              <button class="active" aria-label="Vista cards grandes"><i class="ti ti-layout-grid"></i></button>
+              <button aria-label="Vista cards compactas"><i class="ti ti-layout-list"></i></button>
+            </div>
+            <div class="toolbar-spacer"></div>
+            <button class="btn btn-accent open-new-page-modal" aria-label="Nueva página" style="width:32px; padding:0; justify-content:center;"><i class="ti ti-plus" style="font-size:16px;"></i></button>
+          </div>
+
+          <div class="cards-grid">
+            <div class="grid">
+              <a class="page-card" href="#editar/home" data-view-href="#editar/home">
+                <div class="page-thumb home">
+                  <span class="thumb-badge pub">Publicada</span>
+                  <div class="thumb-content">Una banca con raíces de <em>mar.</em></div>
+                </div>
+                <div class="page-card-body">
+                  <div class="page-card-head"><h3>Home</h3><span class="url">/</span></div>
+                  <div class="page-card-foot"><span class="meta">7 módulos</span><span class="time">Hace 2 días</span></div>
+                </div>
+              </a>
+              <a class="page-card" href="#editar/prensa" data-view-href="#editar/prensa">
+                <div class="page-thumb prensa">
+                  <span class="thumb-badge draft-light">Borrador</span>
+                  <div>
+                    <div class="thumb-eyebrow">// Sala de Prensa</div>
+                    <div class="thumb-content">ABANCA en los medios.</div>
+                  </div>
+                </div>
+                <div class="page-card-body">
+                  <div class="page-card-head"><h3>Sala de Prensa</h3><span class="url">/prensa</span></div>
+                  <div class="page-card-foot"><span class="meta">3 módulos</span><span class="time">Hace 5 horas</span></div>
+                </div>
+              </a>
+              <a class="page-card" href="#editar/timeline" data-view-href="#editar/timeline">
+                <div class="page-thumb timeline">
+                  <span class="thumb-badge draft-dark">Borrador</span>
+                  <div>
+                    <div class="thumb-eyebrow">La historia completa</div>
+                    <div class="thumb-arc"><span class="year">1717</span><span class="sep">—</span><span class="year">2026</span></div>
+                  </div>
+                </div>
+                <div class="page-card-body">
+                  <div class="page-card-head"><h3>Línea de Tiempo</h3><span class="url">/historia</span></div>
+                  <div class="page-card-foot"><span class="meta">5 módulos</span><span class="time">Ayer</span></div>
+                </div>
+              </a>
+              <div class="new-card open-new-page-modal">
+                <div class="inner">
+                  <div class="circle"><i class="ti ti-plus"></i></div>
+                  <div class="ttl">Nueva página</div>
+                  <div class="sub">o pídeselo al asistente</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <aside class="assistant-panel" id="assistantPanelListado">
+          <div class="assistant-head">
+            <i class="ti ti-sparkles lead"></i>
+            <span class="title">Asistente</span>
+            <button class="icon-btn sm" aria-label="Nueva conversación"><i class="ti ti-edit"></i></button>
+            <button class="icon-btn sm assistant-close" aria-label="Cerrar panel"><i class="ti ti-layout-sidebar-right-collapse"></i></button>
+          </div>
+          <div class="assistant-body" id="assistantBodyListado">
+            <div class="assistant-default" id="assistantDefaultListado">
+            <div class="assistant-welcome">
+              <div class="av"><i class="ti ti-sparkles"></i></div>
+              <div class="greet">Hola Pablo</div>
+              <div class="copy">Puedo ayudarte a crear páginas, editar módulos, gestionar imágenes o publicar cambios. ¿Por dónde empezamos?</div>
+            </div>
+            <div>
+              <div class="suggestions-label">Sugerencias</div>
+              <div class="suggestions">
+                <button class="suggestion" data-action="create-page-flow"><i class="ti ti-plus"></i>Crear una nueva página</button>
+                <button class="suggestion"><i class="ti ti-news"></i>Publicar Sala de Prensa</button>
+                <button class="suggestion"><i class="ti ti-photo"></i>Añadir imágenes al repositorio</button>
+                <button class="suggestion"><i class="ti ti-components"></i>Mostrar los módulos disponibles</button>
+              </div>
+            </div>
+            </div>
+            <div class="conversation" id="conversationListado" style="display:none;"></div>
+          </div>
+          <div class="assistant-input">
+            <div class="wrap">
+              <textarea placeholder="Pregunta o pide algo..." rows="2"></textarea>
+              <div class="row">
+                <button class="icon-btn sm" aria-label="Adjuntar"><i class="ti ti-paperclip"></i></button>
+                <button class="send" aria-label="Enviar"><i class="ti ti-arrow-up"></i></button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- VISTA EDICIÓN -->
+    <div class="view" id="view-editar">
+      <div class="topbar">
+        <div class="breadcrumb">
+          <a href="#listado" data-view-href="#listado">Páginas</a>
+          <i class="ti ti-chevron-right"></i>
+          <span class="current" id="editPageTitle">Sala de Prensa</span>
+          <span class="badge" id="editPageBadge"><span class="dot"></span>Borrador</span>
+        </div>
+        <div class="top-actions">
+          <button class="btn"><i class="ti ti-eye"></i>Previsualizar</button>
+          <button class="btn btn-primary"><i class="ti ti-cloud-upload"></i>Publicar</button>
+          <button class="btn btn-assistant" id="assistantBtnEditar"><i class="ti ti-sparkles"></i>Asistente</button>
+        </div>
+      </div>
+
+      <div class="workspace">
+        <aside class="modules-panel">
+          <div class="panel-head">
+            <span class="label">Módulos · 3</span>
+            <button class="icon-btn sm open-module-selector" aria-label="Añadir módulo" title="Añadir módulo"><i class="ti ti-plus"></i></button>
+          </div>
+          <div class="modules-list">
+            <div class="mod-row">
+              <i class="ti ti-grip-vertical mod-grip"></i>
+              <span class="mod-num">1</span>
+              <i class="ti ti-heading mod-icon"></i>
+              <span class="mod-name">Press Hero</span>
+            </div>
+            <div class="mod-row active">
+              <i class="ti ti-grip-vertical mod-grip"></i>
+              <span class="mod-num">2</span>
+              <i class="ti ti-news mod-icon"></i>
+              <span class="mod-name">Press Featured</span>
+            </div>
+            <div class="mod-row">
+              <i class="ti ti-grip-vertical mod-grip"></i>
+              <span class="mod-num">3</span>
+              <i class="ti ti-layout-grid mod-icon"></i>
+              <span class="mod-name">Press Grid</span>
+            </div>
+            <button class="add-module-btn open-module-selector"><i class="ti ti-plus"></i>Añadir módulo</button>
+          </div>
+          <div class="page-config">
+            <div class="label" style="margin-bottom:10px;">Configuración</div>
+            <div class="config-row mono"><span>Ruta</span><span id="editPageUrl">/prensa</span></div>
+            <div class="config-row"><span>Modificada</span><span>Hace 5h</span></div>
+          </div>
+        </aside>
+
+        <main class="canvas">
+          <div class="canvas-inner">
+            <div class="module-card">
+              <span class="module-label dark">Press Hero</span>
+              <div class="hero-mod">
+                <div class="hero-eyebrow">// Sala de Prensa</div>
+                <div class="hero-title">ABANCA<br>en los medios.</div>
+                <div class="hero-lead">Cobertura editorial, notas de prensa y apariciones institucionales del grupo desde 2014.</div>
+                <div class="hero-filters">
+                  <span class="hero-filter active">Todos</span>
+                  <span class="hero-filter">2026</span>
+                  <span class="hero-filter">2025</span>
+                  <span class="hero-filter">2024</span>
+                </div>
+              </div>
+            </div>
+            <div class="insert-divider">
+              <div class="line"></div>
+              <button class="open-module-selector" aria-label="Insertar módulo aquí"><i class="ti ti-plus"></i></button>
+              <div class="line"></div>
+            </div>
+            <div class="module-card editing">
+              <span class="module-label editing-state">Press Featured · editando</span>
+              <div class="featured-grid">
+                <div class="featured-img"><i class="ti ti-building-bank"></i></div>
+                <div class="featured-content">
+                  <div class="pf-label">// Artículo destacado</div>
+                  <div class="pf-source">Financial Times · 12 mayo 2026</div>
+                  <div class="pf-title">ABANCA consolida su expansión atlántica con la apertura de su décimo país</div>
+                  <div class="pf-excerpt">El grupo gallego confirma su presencia en diez mercados del Atlántico norte tras cerrar 2025 con un beneficio neto récord.</div>
+                </div>
+              </div>
+            </div>
+            <div class="insert-divider">
+              <div class="line"></div>
+              <button class="open-module-selector" aria-label="Insertar módulo aquí"><i class="ti ti-plus"></i></button>
+              <div class="line"></div>
+            </div>
+            <div class="module-card">
+              <span class="module-label light">Press Grid</span>
+              <div class="grid-mod">
+                <div class="grid-head">
+                  <span class="gh-title">Más cobertura</span>
+                  <span class="gh-count">24 artículos</span>
+                </div>
+                <div class="grid-items">
+                  <div class="grid-item">
+                    <div class="gi-source">El País</div>
+                    <div class="gi-title">La banca gallega lidera el ranking de satisfacción</div>
+                  </div>
+                  <div class="grid-item">
+                    <div class="gi-source">Bloomberg</div>
+                    <div class="gi-title">Atlantic banking outpaces national giants</div>
+                  </div>
+                  <div class="grid-item">
+                    <div class="gi-source">Expansión</div>
+                    <div class="gi-title">ABANCA lanza banca digital en Portugal</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="insert-divider">
+              <div class="line"></div>
+              <button class="open-module-selector" aria-label="Insertar módulo aquí"><i class="ti ti-plus"></i></button>
+              <div class="line"></div>
+            </div>
+          </div>
+        </main>
+
+        <aside class="props-panel">
+          <div class="props-head">
+            <i class="ti ti-news lead"></i>
+            <div style="flex:1;">
+              <div class="title">Press Featured</div>
+              <div class="sub">.press-featured</div>
+            </div>
+            <button class="icon-btn sm" aria-label="Más acciones"><i class="ti ti-dots"></i></button>
+          </div>
+          <div class="props-body">
+            <div class="field-group"><label>Etiqueta</label><input class="input" type="text" value="// Artículo destacado"></div>
+            <div class="field-group"><label>Fuente</label><input class="input" type="text" value="Financial Times"></div>
+            <div class="field-group"><label>Fecha</label><input class="input" type="text" value="12 mayo 2026"></div>
+            <div class="field-group"><label>Titular</label><textarea class="textarea" rows="2">ABANCA consolida su expansión atlántica con la apertura de su décimo país</textarea></div>
+            <div class="field-group"><label>Extracto</label><textarea class="textarea" rows="4">El grupo gallego confirma su presencia en diez mercados del Atlántico norte tras cerrar el ejercicio 2025 con un beneficio neto de 1.245 millones de euros.</textarea></div>
+            <div class="field-group">
+              <label>Imagen</label>
+              <div class="image-field">
+                <div class="image-thumb"><i class="ti ti-photo"></i></div>
+                <div class="image-info">
+                  <div class="name">sede-abanca.jpg</div>
+                  <button class="open-image-picker">Cambiar imagen</button>
+                </div>
+              </div>
+            </div>
+            <div class="field-group"><label>Enlace</label><input class="input" type="text" value="https://ft.com/article/..."></div>
+          </div>
+        </aside>
+
+        <aside class="assistant-panel" id="assistantPanelEditar">
+          <div class="assistant-head">
+            <i class="ti ti-sparkles lead"></i>
+            <span class="title">Asistente</span>
+            <button class="icon-btn sm" aria-label="Nueva conversación"><i class="ti ti-edit"></i></button>
+            <button class="icon-btn sm assistant-close" aria-label="Cerrar panel"><i class="ti ti-layout-sidebar-right-collapse"></i></button>
+          </div>
+          <div class="assistant-body">
+            <div class="assistant-welcome">
+              <div class="av"><i class="ti ti-sparkles"></i></div>
+              <div class="greet">Editando Sala de Prensa</div>
+              <div class="copy">¿Quieres que ajuste un módulo, añada uno nuevo, o reordene la página?</div>
+            </div>
+            <div>
+              <div class="suggestions-label">Sugerencias</div>
+              <div class="suggestions">
+                <button class="suggestion"><i class="ti ti-edit"></i>Cambiar el titular del Hero</button>
+                <button class="suggestion"><i class="ti ti-plus"></i>Añadir un Press Featured</button>
+                <button class="suggestion"><i class="ti ti-arrows-shuffle"></i>Reordenar los módulos</button>
+                <button class="suggestion"><i class="ti ti-cloud-upload"></i>Publicar esta página</button>
+              </div>
+            </div>
+          </div>
+          <div class="assistant-input">
+            <div class="wrap">
+              <textarea placeholder="Pregunta o pide algo..." rows="2"></textarea>
+              <div class="row">
+                <button class="icon-btn sm" aria-label="Adjuntar"><i class="ti ti-paperclip"></i></button>
+                <button class="send" aria-label="Enviar"><i class="ti ti-arrow-up"></i></button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ IMAGE PICKER (contextual) ============ -->
+<div class="picker-backdrop" id="pickerBackdrop"></div>
+<aside class="image-picker" id="imagePicker">
+  <div class="picker-head">
+    <div class="title-block">
+      <div class="title">Seleccionar imagen</div>
+      <div class="sub">Elige una imagen del repositorio o sube una nueva</div>
+    </div>
+    <button class="icon-btn" id="closeImagePicker" aria-label="Cerrar"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="picker-search">
+    <div class="wrap">
+      <i class="ti ti-search"></i>
+      <input type="text" placeholder="Buscar imagen...">
+    </div>
+    <button class="btn"><i class="ti ti-upload"></i>Subir</button>
+  </div>
+  <div class="picker-body">
+    <div class="picker-grid">
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder dark"><i class="ti ti-building-bank"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">sede-abanca-coruna.jpg</div><div class="image-card-meta"><span class="img-tag">Edificios</span></div></div>
+      </div>
+      <div class="image-card selected">
+        <div class="image-thumb-wrap"><div class="placeholder sea"><i class="ti ti-wave-sine"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">atlantico-norte.jpg</div><div class="image-card-meta"><span class="img-tag">Editorial</span></div></div>
+      </div>
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder archive"><i class="ti ti-camera-old"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">betanzos-1920.jpg</div><div class="image-card-meta"><span class="img-tag">Archivo</span></div></div>
+      </div>
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder paper-bg"><i class="ti ti-user"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">escotet-juan-carlos.jpg</div><div class="image-card-meta"><span class="img-tag">Equipo</span></div></div>
+      </div>
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder dark"><i class="ti ti-building-skyscraper"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">torre-madrid.jpg</div><div class="image-card-meta"><span class="img-tag">Edificios</span></div></div>
+      </div>
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder archive"><i class="ti ti-news"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">prensa-1957.jpg</div><div class="image-card-meta"><span class="img-tag">Archivo</span></div></div>
+      </div>
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder sea"><i class="ti ti-anchor"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">puerto-coruna.jpg</div><div class="image-card-meta"><span class="img-tag">Editorial</span></div></div>
+      </div>
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder paper-bg"><i class="ti ti-users-group"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">consejo-direccion.jpg</div><div class="image-card-meta"><span class="img-tag">Equipo</span></div></div>
+      </div>
+      <div class="image-card">
+        <div class="image-thumb-wrap"><div class="placeholder archive"><i class="ti ti-coin"></i></div></div>
+        <div class="image-card-body"><div class="image-card-name">caja-ahorros-1857.jpg</div><div class="image-card-meta"><span class="img-tag">Archivo</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="picker-foot">
+    <button class="btn" id="cancelImagePicker">Cancelar</button>
+    <button class="btn btn-accent">Seleccionar imagen</button>
+  </div>
+</aside>
+
+<!-- ============ MODAL: NUEVA PÁGINA ============ -->
+<div class="modal-backdrop" id="newPageModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="title-block">
+        <div class="title">Nueva página</div>
+        <div class="sub">Define el nombre, la ruta y el punto de partida</div>
+      </div>
+      <button class="icon-btn" id="closeNewPageModal" aria-label="Cerrar"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+
+      <div class="field-group">
+        <label>Nombre de la página</label>
+        <input class="input" type="text" id="newPageName" placeholder="Ej. Inversores" autocomplete="off">
+      </div>
+
+      <div class="field-group">
+        <label>Ruta</label>
+        <div class="input-with-prefix">
+          <span class="prefix">/</span>
+          <input type="text" id="newPageUrl" placeholder="inversores" autocomplete="off">
+        </div>
+        <div class="field-help">La ruta se genera automáticamente desde el nombre, pero puedes editarla.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Punto de partida</label>
+        <div class="radio-group">
+          <div class="radio-card selected" data-template="blank">
+            <div class="radio-circle"></div>
+            <div class="radio-content">
+              <div class="radio-title">En blanco</div>
+              <div class="radio-desc">Empieza con una página vacía y añade los módulos que necesites desde cero.</div>
+            </div>
+          </div>
+          <div class="radio-card" data-template="duplicate">
+            <div class="radio-circle"></div>
+            <div class="radio-content">
+              <div class="radio-title">Basada en otra página</div>
+              <div class="radio-desc">Duplica la estructura de módulos de una página existente como punto de partida.</div>
+              <div class="source-select">
+                <label>Duplicar desde</label>
+                <select>
+                  <option value="home">Home</option>
+                  <option value="prensa" selected>Sala de Prensa</option>
+                  <option value="timeline">Línea de Tiempo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn" id="cancelNewPage">Cancelar</button>
+      <button class="btn btn-accent" id="confirmNewPage">Crear página</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODULE SELECTOR PANEL ============ -->
+<div class="selector-backdrop" id="selectorBackdrop"></div>
+<aside class="module-selector" id="moduleSelector">
+  <div class="selector-head">
+    <div class="title-block">
+      <div class="title">Añadir módulo</div>
+      <div class="sub">13 módulos disponibles en el Sistema de Diseño</div>
+    </div>
+    <button class="icon-btn" id="closeSelector" aria-label="Cerrar"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="selector-search">
+    <div class="wrap">
+      <i class="ti ti-search"></i>
+      <input type="text" placeholder="Buscar módulo por nombre...">
+    </div>
+  </div>
+  <div class="selector-body">
+
+    <div class="selector-category">
+      <div class="cat-label"><span>Globales</span><span class="count">7 módulos</span></div>
+      <div class="selector-grid">
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-hero">
+              <div class="me">// Origen</div>
+              <div class="mt">Una banca con raíces.</div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Hero</div>
+            <div class="selector-card-desc">Cabecera con parallax y wave de fondo</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-manifesto">
+              <div class="me">// Manifiesto</div>
+              <div class="t">Tres siglos. Una herencia atlántica.</div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Manifesto</div>
+            <div class="selector-card-desc">Bloque editorial con declaración corta</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-stats">
+              <div class="st"><div class="v">308</div><div class="l">Años</div></div>
+              <div class="st"><div class="v">11</div><div class="l">Países</div></div>
+              <div class="st"><div class="v">+4M</div><div class="l">Clientes</div></div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Stats</div>
+            <div class="selector-card-desc">Cifras destacadas con contador animado</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-quote">
+              <div class="q">"Galicia es nuestro origen."</div>
+              <div class="a">— Juan Carlos Escotet</div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Big Quote</div>
+            <div class="selector-card-desc">Cita destacada con autoría</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-timeline-h">
+              <div class="yr">1717</div>
+              <div class="ev"></div>
+              <div class="yr">2026</div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Timeline Horizontal</div>
+            <div class="selector-card-desc">Línea cronológica con scroll lateral</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-hero" style="background: var(--paper);">
+              <div class="me" style="color: var(--accent-deep);">// Refundación · 2014</div>
+              <div class="mt" style="color: var(--ink);">Una nueva era.</div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Refundación</div>
+            <div class="selector-card-desc">Sección hito con narrativa larga</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-grid" style="background: var(--bg-primary);">
+              <div class="hd"><span style="font-family:var(--font-serif); font-size:6px; color:var(--ink);">Liderazgo</span></div>
+              <div class="gt">
+                <div class="it"><div style="background:var(--bg-secondary); aspect-ratio:1; margin-bottom:2px;"></div><div class="t">CEO</div></div>
+                <div class="it"><div style="background:var(--bg-secondary); aspect-ratio:1; margin-bottom:2px;"></div><div class="t">COO</div></div>
+                <div class="it"><div style="background:var(--bg-secondary); aspect-ratio:1; margin-bottom:2px;"></div><div class="t">CFO</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Liderazgo</div>
+            <div class="selector-card-desc">Grid de equipo directivo con foto y cargo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="selector-category">
+      <div class="cat-label"><span>Sala de Prensa</span><span class="count">3 módulos</span></div>
+      <div class="selector-grid">
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-press-hero">
+              <div class="me">// Sala de Prensa</div>
+              <div class="mt">ABANCA en los medios.</div>
+              <div class="mf"><span class="on">Todos</span><span>26</span><span>25</span><span>24</span></div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Press Hero</div>
+            <div class="selector-card-desc">Cabecera con filtros por año</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-featured">
+              <div class="img"><i class="ti ti-building-bank"></i></div>
+              <div class="txt">
+                <div class="src">Financial Times</div>
+                <div class="ttl">ABANCA expande su presencia atlántica</div>
+              </div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Press Featured</div>
+            <div class="selector-card-desc">Artículo destacado a dos columnas</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-grid">
+              <div class="hd"><span>Más cobertura</span><span style="font-family:var(--font-mono); font-size:4px;">24</span></div>
+              <div class="gt">
+                <div class="it"><div class="s">El País</div><div class="t">La banca gallega lidera...</div></div>
+                <div class="it"><div class="s">Bloomberg</div><div class="t">Atlantic banking outpaces...</div></div>
+                <div class="it"><div class="s">Expansión</div><div class="t">ABANCA lanza banca digital...</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Press Grid</div>
+            <div class="selector-card-desc">Grid de 3 columnas con artículos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="selector-category">
+      <div class="cat-label"><span>Línea de Tiempo</span><span class="count">3 módulos</span></div>
+      <div class="selector-grid">
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-timeline-hero">
+              <div class="me">La historia completa</div>
+              <div class="arc"><span class="y">1717</span><span class="s">—</span><span class="y">2026</span></div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Timeline Hero</div>
+            <div class="selector-card-desc">Cabecera con arco cronológico</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-timeline-item">
+              <div class="img"></div>
+              <div class="txt">
+                <div class="p">1857 — 1920</div>
+                <div class="t">El origen gallego</div>
+              </div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Timeline Item Full</div>
+            <div class="selector-card-desc">Hito histórico con imagen y dato clave</div>
+          </div>
+        </div>
+        <div class="selector-card">
+          <div class="selector-thumb">
+            <div class="mini-milestone">
+              <div class="y">1927</div>
+              <div class="v">127.000</div>
+            </div>
+          </div>
+          <div class="selector-card-body">
+            <div class="selector-card-name">Milestone Stat</div>
+            <div class="selector-card-desc">Separador con dato cuantitativo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+<script>
+  const PAGES = {
+    home:     { title: 'Home',            url: '/',         status: 'pub',   badgeLabel: 'Publicada' },
+    prensa:   { title: 'Sala de Prensa',  url: '/prensa',   status: 'draft', badgeLabel: 'Borrador' },
+    timeline: { title: 'Línea de Tiempo', url: '/historia', status: 'draft', badgeLabel: 'Borrador' }
+  };
+
+  function setActiveNav(view, pageKey) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (view === 'editar' && pageKey) {
+      const target = document.querySelector(`.nav-item[href="#editar/${pageKey}"]`);
+      if (target) target.classList.add('active');
+    }
+  }
+
+  function renderEditView(pageKey) {
+    const page = PAGES[pageKey] || PAGES.prensa;
+    document.getElementById('editPageTitle').textContent = page.title;
+    document.getElementById('editPageUrl').textContent = page.url;
+    const badge = document.getElementById('editPageBadge');
+    badge.innerHTML = `<span class="dot" style="background:${page.status === 'pub' ? 'var(--pos)' : 'var(--border-secondary)'};"></span>${page.badgeLabel}`;
+    if (page.status === 'pub') {
+      badge.style.background = 'rgba(45,122,63,0.10)';
+      badge.style.color = 'var(--pos)';
+    } else {
+      badge.style.background = 'rgba(10,26,47,0.08)';
+      badge.style.color = 'var(--ink-2)';
+    }
+  }
+
+  function navigate() {
+    const hash = location.hash || '#listado';
+    const [route, param] = hash.replace('#', '').split('/');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    if (route === 'editar') {
+      document.getElementById('view-editar').classList.add('active');
+      renderEditView(param);
+      setActiveNav('editar', param);
+    } else if (route === 'imagenes') {
+      document.getElementById('view-imagenes').classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const target = document.querySelector('.nav-item[href="#imagenes"]');
+      if (target) target.classList.add('active');
+    } else {
+      document.getElementById('view-listado').classList.add('active');
+      setActiveNav('listado');
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-view-href]');
+    if (link) {
+      e.preventDefault();
+      location.hash = link.getAttribute('data-view-href');
+    }
+  });
+
+  window.addEventListener('hashchange', navigate);
+  navigate();
+
+  document.getElementById('logoLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    const rail = document.getElementById('navRail');
+    const icon = document.getElementById('toggleIcon');
+    rail.classList.toggle('expanded');
+    icon.className = rail.classList.contains('expanded')
+      ? 'ti ti-layout-sidebar-left-collapse'
+      : 'ti ti-layout-sidebar-left-expand';
+  });
+
+  function openAssistant(viewName) {
+    document.querySelectorAll('.assistant-panel').forEach(p => p.classList.remove('open'));
+    const target = viewName === 'editar' ? 'assistantPanelEditar' : 'assistantPanelListado';
+    document.getElementById(target).classList.add('open');
+    document.querySelectorAll('.btn-assistant').forEach(b => b.classList.add('active'));
+  }
+  function closeAssistant() {
+    document.querySelectorAll('.assistant-panel').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.btn-assistant').forEach(b => b.classList.remove('active'));
+  }
+  document.getElementById('assistantBtnListado').addEventListener('click', () => {
+    if (document.getElementById('assistantPanelListado').classList.contains('open')) closeAssistant();
+    else openAssistant('listado');
+  });
+  document.getElementById('assistantBtnEditar').addEventListener('click', () => {
+    if (document.getElementById('assistantPanelEditar').classList.contains('open')) closeAssistant();
+    else openAssistant('editar');
+  });
+  document.querySelectorAll('.assistant-close').forEach(b => {
+    b.addEventListener('click', closeAssistant);
+  });
+
+  // Module selector
+  function openModuleSelector() {
+    document.getElementById('moduleSelector').classList.add('open');
+    document.getElementById('selectorBackdrop').classList.add('open');
+  }
+  function closeModuleSelector() {
+    document.getElementById('moduleSelector').classList.remove('open');
+    document.getElementById('selectorBackdrop').classList.remove('open');
+  }
+  document.querySelectorAll('.open-module-selector').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openModuleSelector();
+    });
+  });
+  document.getElementById('closeSelector').addEventListener('click', closeModuleSelector);
+  document.getElementById('selectorBackdrop').addEventListener('click', closeModuleSelector);
+
+  // ============ MODAL NUEVA PÁGINA ============
+  function slugify(text) {
+    return text.toString().toLowerCase().trim()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  function openNewPageModal() {
+    document.getElementById('newPageModal').classList.add('open');
+    setTimeout(() => document.getElementById('newPageName').focus(), 200);
+  }
+  function closeNewPageModal() {
+    document.getElementById('newPageModal').classList.remove('open');
+    document.getElementById('newPageName').value = '';
+    document.getElementById('newPageUrl').value = '';
+  }
+
+  document.querySelectorAll('.open-new-page-modal').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openNewPageModal();
+    });
+  });
+
+  document.getElementById('closeNewPageModal').addEventListener('click', closeNewPageModal);
+  document.getElementById('cancelNewPage').addEventListener('click', closeNewPageModal);
+  document.getElementById('newPageModal').addEventListener('click', (e) => {
+    if (e.target.id === 'newPageModal') closeNewPageModal();
+  });
+
+  // Auto-slug del nombre a la ruta
+  let urlManuallyEdited = false;
+  const nameInput = document.getElementById('newPageName');
+  const urlInput = document.getElementById('newPageUrl');
+  nameInput.addEventListener('input', () => {
+    if (!urlManuallyEdited) urlInput.value = slugify(nameInput.value);
+  });
+  urlInput.addEventListener('input', () => {
+    urlManuallyEdited = urlInput.value.length > 0;
+  });
+
+  // Radio cards
+  document.querySelectorAll('.radio-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+
+  // Crear (simulado)
+  document.getElementById('confirmNewPage').addEventListener('click', () => {
+    const name = document.getElementById('newPageName').value.trim();
+    if (!name) {
+      document.getElementById('newPageName').focus();
+      return;
+    }
+    closeNewPageModal();
+    alert('Página "' + name + '" creada. En producción, te llevaría a su vista de edición.');
+  });
+
+  // ============ FLUJO CONVERSACIONAL: CREAR PÁGINA ============
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function startConversation() {
+    document.getElementById('assistantDefaultListado').style.display = 'none';
+    const body = document.getElementById('assistantBodyListado');
+    body.classList.add('has-conversation');
+    const conv = document.getElementById('conversationListado');
+    conv.style.display = 'flex';
+    return conv;
+  }
+
+  function addMessage(conv, role, html) {
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + role;
+    msg.innerHTML = role === 'ai'
+      ? `<div class="msg-author"><i class="ti ti-sparkles"></i>Asistente</div><div class="msg-bubble">${html}</div>`
+      : `<div class="msg-bubble">${html}</div>`;
+    conv.appendChild(msg);
+    conv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    setTimeout(() => msg.scrollIntoView({ behavior: 'smooth', block: 'end' }), 50);
+    return msg;
+  }
+
+  function runCreatePageFlow() {
+    const conv = startConversation();
+    conv.innerHTML = '';
+
+    addMessage(conv, 'user', 'Crea una página de Inversores');
+
+    setTimeout(() => {
+      const proposalHtml = `
+        <p>Entendido. He preparado una propuesta para una página dirigida a inversores y mercado financiero, manteniendo el tono editorial y sobrio del resto del site.</p>
+        <div class="page-proposal">
+          <div class="pp-head">
+            <div class="pp-icon"><i class="ti ti-chart-line"></i></div>
+            <div class="pp-head-text">
+              <div class="pp-name">Inversores</div>
+              <div class="pp-url">/inversores</div>
+            </div>
+          </div>
+          <div class="pp-section-label">Estructura propuesta · 5 módulos</div>
+          <div class="pp-modules">
+            <div class="pp-module"><span class="num">1</span><i class="ti ti-heading"></i>Hero<span class="src">Globales</span></div>
+            <div class="pp-module"><span class="num">2</span><i class="ti ti-quote"></i>Big Quote<span class="src">Globales</span></div>
+            <div class="pp-module"><span class="num">3</span><i class="ti ti-chart-bar"></i>Stats<span class="src">Globales</span></div>
+            <div class="pp-module"><span class="num">4</span><i class="ti ti-news"></i>Press Featured<span class="src">Sala de Prensa</span></div>
+            <div class="pp-module"><span class="num">5</span><i class="ti ti-layout-grid"></i>Press Grid<span class="src">Sala de Prensa</span></div>
+          </div>
+        </div>
+        <div class="msg-actions">
+          <button class="msg-btn primary" id="confirmCreatePageBtn"><i class="ti ti-check"></i>Crear página</button>
+          <button class="msg-btn" id="adjustCreatePageBtn"><i class="ti ti-adjustments"></i>Ajustar</button>
+        </div>
+      `;
+      addMessage(conv, 'ai', proposalHtml);
+
+      document.getElementById('confirmCreatePageBtn').addEventListener('click', () => {
+        addMessage(conv, 'user', 'Adelante, créala');
+        setTimeout(() => {
+          const confirmHtml = `
+            <p>Hecho. He creado la página <strong>Inversores</strong> con los 5 módulos propuestos. Ya puedes empezar a personalizar el contenido.</p>
+            <div class="page-created">
+              <div class="check"><i class="ti ti-check"></i></div>
+              <div class="text">
+                <div class="ttl">Inversores</div>
+                <div class="sub">Borrador · 5 módulos · /inversores</div>
+              </div>
+              <a class="open-link" href="#editar/prensa" data-view-href="#editar/prensa">Abrir →</a>
+            </div>
+          `;
+          addMessage(conv, 'ai', confirmHtml);
+        }, 700);
+      });
+
+      document.getElementById('adjustCreatePageBtn').addEventListener('click', () => {
+        addMessage(conv, 'user', 'Quita Press Grid y añade Timeline Horizontal');
+        setTimeout(() => {
+          addMessage(conv, 'ai', '<p>Ajusto la estructura. ¿Quieres revisar la propuesta actualizada antes de crear?</p>');
+        }, 700);
+      });
+
+    }, 600);
+  }
+
+  document.querySelectorAll('[data-action="create-page-flow"]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      runCreatePageFlow();
+    });
+  });
+
+  // Reset conversación al cerrar asistente
+  function resetAssistantToDefault() {
+    document.getElementById('assistantDefaultListado').style.display = '';
+    const body = document.getElementById('assistantBodyListado');
+    body.classList.remove('has-conversation');
+    const conv = document.getElementById('conversationListado');
+    conv.style.display = 'none';
+    conv.innerHTML = '';
+  }
+  // Al pulsar "nueva conversación"
+  document.querySelectorAll('.assistant-head .icon-btn[aria-label="Nueva conversación"]').forEach(b => {
+    b.addEventListener('click', resetAssistantToDefault);
+  });
+
+  // ============ ASISTENTE EN VISTA IMÁGENES ============
+  document.getElementById('assistantBtnImagenes')?.addEventListener('click', () => {
+    alert('En la demo final, el asistente se abriría aquí con sugerencias sobre gestión de imágenes (organizar por tags, sugerir imágenes para un módulo, etc.)');
+  });
+
+  // ============ IMAGE PICKER ============
+  function openImagePicker() {
+    document.getElementById('imagePicker').classList.add('open');
+    document.getElementById('pickerBackdrop').classList.add('open');
+  }
+  function closeImagePicker() {
+    document.getElementById('imagePicker').classList.remove('open');
+    document.getElementById('pickerBackdrop').classList.remove('open');
+  }
+  document.querySelectorAll('.open-image-picker').forEach(b => {
+    b.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openImagePicker();
+    });
+  });
+  document.getElementById('closeImagePicker').addEventListener('click', closeImagePicker);
+  document.getElementById('cancelImagePicker').addEventListener('click', closeImagePicker);
+  document.getElementById('pickerBackdrop').addEventListener('click', closeImagePicker);
+
+  // Selección dentro del picker
+  document.querySelectorAll('#imagePicker .image-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('#imagePicker .image-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+
+  // Tabs en vista imágenes
+  document.querySelectorAll('.images-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.images-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
